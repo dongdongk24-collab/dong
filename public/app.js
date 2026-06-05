@@ -5,6 +5,12 @@ const state = {
   source: "all",
 };
 
+const params = new URLSearchParams(window.location.search);
+if (params.get("api")) {
+  localStorage.setItem("resourceApiBase", params.get("api").replace(/\/$/, ""));
+}
+const apiBase = (localStorage.getItem("resourceApiBase") || "").replace(/\/$/, "");
+
 const list = document.querySelector("#list");
 const searchInput = document.querySelector("#searchInput");
 const sourceFilter = document.querySelector("#sourceFilter");
@@ -24,6 +30,11 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function apiUrl(fresh) {
+  const path = `/api/posts${fresh ? `?fresh=${Date.now()}` : ""}`;
+  return apiBase ? `${apiBase}${path}` : path;
 }
 
 function renderSources() {
@@ -91,10 +102,10 @@ function renderHealth(payload) {
 async function loadPosts({ fresh = false } = {}) {
   refreshBtn.disabled = true;
   refreshBtn.textContent = "갱신 중";
-  healthText.textContent = "";
+  healthText.textContent = apiBase ? `외부 수집 API 사용 중: ${apiBase}` : "";
 
   try {
-    const response = await fetch(`/api/posts${fresh ? `?fresh=${Date.now()}` : ""}`);
+    const response = await fetch(apiUrl(fresh));
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const payload = await response.json();
 
@@ -107,7 +118,7 @@ async function loadPosts({ fresh = false } = {}) {
   } catch (error) {
     list.innerHTML = `<div class="empty">자원 목록을 불러오지 못했습니다: ${escapeHtml(error.message)}</div>`;
     countText.textContent = "오류";
-    updatedText.textContent = "배포된 API 상태를 확인해주세요.";
+    updatedText.textContent = apiBase ? "외부 수집 API 상태를 확인해주세요." : "배포된 API 상태를 확인해주세요.";
   } finally {
     refreshBtn.disabled = false;
     refreshBtn.textContent = "새로고침";
