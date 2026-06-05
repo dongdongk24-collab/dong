@@ -1,8 +1,12 @@
+const http = require("node:http");
+const https = require("node:https");
+const dns = require("node:dns");
+
 const SOURCES = [
-  { id: "kaswc", name: "\uD55C\uAD6D\uC0AC\uD68C\uBCF5\uC9C0\uAD00\uD611\uD68C", url: "https://kaswc.or.kr/support/rss", pageUrl: "https://kaswc.or.kr/support", origin: "https://kaswc.or.kr", type: "rss" },
-  { id: "saswc", name: "\uC11C\uC6B8\uC2DC\uC0AC\uD68C\uBCF5\uC9C0\uAD00\uD611\uD68C", url: "https://www.saswc.org/support", origin: "https://www.saswc.org", type: "rhymix" },
-  { id: "welfare-gallery", name: "\uD55C\uAD6D\uC0AC\uD68C\uBCF5\uC9C0\uC0AC\uD611\uD68C \uD604\uC7A5\uC18C\uC2DD", url: "https://www.welfare.net/data/gallery", origin: "https://www.welfare.net", type: "welfareGallery" },
-  { id: "bokji-biz", name: "\uBCF5\uC9C0\uB137 \uC0AC\uC5C5\uACF5\uBAA8", url: "https://www.bokji.net/not/biz/01.bokji", fallbackUrl: "http://www.bokji.net/not/biz/01.bokji", origin: "https://www.bokji.net", type: "bokjiBiz", pages: [1, 2] },
+  { id: "kaswc", name: "\uD55C\uAD6D\uC0AC\uD68C\uBCF5\uC9C0\uAD00\uD611\uD68C", urls: ["https://www.kaswc.or.kr/support/rss", "https://kaswc.or.kr/support/rss", "http://www.kaswc.or.kr/support/rss", "http://kaswc.or.kr/support/rss"], pageUrl: "https://kaswc.or.kr/support", origin: "https://kaswc.or.kr", type: "rss" },
+  { id: "saswc", name: "\uC11C\uC6B8\uC2DC\uC0AC\uD68C\uBCF5\uC9C0\uAD00\uD611\uD68C", urls: ["https://www.saswc.org/support"], origin: "https://www.saswc.org", type: "rhymix" },
+  { id: "welfare-gallery", name: "\uD55C\uAD6D\uC0AC\uD68C\uBCF5\uC9C0\uC0AC\uD611\uD68C \uD604\uC7A5\uC18C\uC2DD", urls: ["https://api.welfare.net/main/na/ntt/selectNttList.do?mi=1081&bbsId=1093&currPage=1&searchType=all&searchValue=&listCo=9"], pageUrl: "https://www.welfare.net/data/gallery", origin: "https://www.welfare.net", type: "welfareGallery" },
+  { id: "bokji-biz", name: "\uBCF5\uC9C0\uB137 \uC0AC\uC5C5\uACF5\uBAA8", urls: ["https://www.bokji.net/not/biz/01.bokji", "http://www.bokji.net/not/biz/01.bokji"], origin: "https://www.bokji.net", type: "bokjiBiz", pages: [1, 2] },
 ];
 
 function decodeHtml(value = "") {
@@ -21,6 +25,7 @@ function decodeHtml(value = "") {
 }
 
 function resolveLink(origin, href) {
+  if (!href) return origin;
   if (/^https?:\/\//i.test(href)) return href;
   if (href.startsWith("/")) return `${origin}${href}`;
   return `${origin}/${href}`;
@@ -37,22 +42,61 @@ function dedupe(posts) {
 
 function headersFor(source, extra = {}) {
   return {
-    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
-    accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "accept-language": "ko-KR,ko;q=0.9,en-US;q=0.7,en;q=0.6",
-    referer: source.origin + "/",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.7,en;q=0.6",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache",
+    "Referer": source.origin + "/",
     ...extra,
   };
 }
 
-async function fetchWithFallback(urls, options) {
+function requestText(url, source, extraHeaders = {}, redirectCount = 0) {
+  return new Promise((resolve, reject) => {
+    const target = new URL(url);
+    const client = target.protocol === "http:" ? http : https;
+    const req = client.request({
+      protocol: target.protocol,
+      hostname: target.hostname,
+      port: target.port || undefined,
+      path: `${target.pathname}${target.search}`,
+      method: "GET",
+      headers: headersFor(source, extraHeaders),
+      lookup: (hostname, options, cb) => dns.lookup(hostname, { ...options, family: 4 }, cb),
+      timeout: 12000,
+    }, (res) => {
+      const location = res.headers.location;
+      if ([301, 302, 303, 307, 308].includes(res.statusCode) && location && redirectCount < 4) {
+        res.resume();
+        const nextUrl = new URL(location, target).toString();
+        requestText(nextUrl, source, extraHeaders, redirectCount + 1).then(resolve, reject);
+        return;
+      }
+
+      let body = "";
+      res.setEncoding("utf8");
+      res.on("data", (chunk) => { body += chunk; });
+      res.on("end", () => {
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          reject(new Error(`HTTP ${res.statusCode}`));
+          return;
+        }
+        resolve(body);
+      });
+    });
+    req.on("timeout", () => req.destroy(new Error("timeout")));
+    req.on("error", reject);
+    req.end();
+  });
+}
+
+async function textWithFallback(urls, source, headers = {}) {
   const attempts = Array.isArray(urls) ? urls : [urls];
   const errors = [];
   for (const url of attempts) {
     try {
-      const response = await fetch(url, options);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      return response;
+      return await requestText(url, source, headers);
     } catch (error) {
       errors.push(`${url}: ${error.message}`);
     }
@@ -68,8 +112,7 @@ function parseRssDate(value) {
 }
 
 async function fetchRss(source) {
-  const response = await fetchWithFallback(source.url, { redirect: "follow", headers: headersFor(source) });
-  const xml = await response.text();
+  const xml = await textWithFallback(source.urls, source, { "Accept": "application/rss+xml, application/xml, text/xml, */*" });
   const items = [...xml.matchAll(/<item[\s\S]*?<\/item>/gi)];
   const posts = items.map((match, index) => {
     const item = match[0];
@@ -92,7 +135,7 @@ function parseRhymixRows(source, html) {
     const cells = [...rowMatch[2].matchAll(/<td([^>]*)>([\s\S]*?)<\/td>/gi)].map((match) => ({ attrs: match[1] || "", html: match[2] || "" }));
     if (cells.length < 4) return null;
     const number = decodeHtml(cells[0].html);
-    if (!number || number === "\uACF5\uC9C0") return null;
+    if (!number || number === "공지") return null;
     const titleCellIndex = cells.findIndex((cell) => /\btitle\b/i.test(cell.attrs));
     if (titleCellIndex < 0) return null;
     const link = cells[titleCellIndex].html.match(/<a[^>]+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/i);
@@ -105,16 +148,15 @@ function parseRhymixRows(source, html) {
 }
 
 async function fetchRhymix(source) {
-  const response = await fetchWithFallback(source.url, { redirect: "follow", headers: headersFor(source) });
-  const posts = parseRhymixRows(source, await response.text());
+  const html = await textWithFallback(source.urls, source);
+  const posts = parseRhymixRows(source, html);
   if (posts.length === 0) throw new Error("게시글 목록을 찾지 못했습니다");
   return posts;
 }
 
 async function fetchWelfareGallery(source) {
-  const apiUrl = "https://api.welfare.net/main/na/ntt/selectNttList.do?mi=1081&bbsId=1093&currPage=1&searchType=all&searchValue=&listCo=9";
-  const response = await fetchWithFallback(apiUrl, { headers: headersFor(source, { accept: "application/json, text/plain, */*", origin: "https://www.welfare.net", referer: "https://www.welfare.net/data/gallery" }) });
-  const list = (await response.json())?.nttListPaging?.list || [];
+  const body = await textWithFallback(source.urls, source, { "Accept": "application/json, text/plain, */*", "Origin": "https://www.welfare.net", "Referer": "https://www.welfare.net/data/gallery" });
+  const list = JSON.parse(body)?.nttListPaging?.list || [];
   const posts = list.map((item) => ({ id: `${source.id}-${item.nttSn}`, sourceId: source.id, source: source.name, number: String(item.rsn || item.nttSn || ""), category: "현장소식", title: decodeHtml(item.nttSj || ""), date: item.regDt || "", url: `${source.origin}/data/gallery/gallery-detail?mi=1081&bbsId=1093&nttSn=${encodeURIComponent(item.nttSn)}` })).filter((post) => post.title);
   if (posts.length === 0) throw new Error("게시글 목록을 찾지 못했습니다");
   return posts;
@@ -127,7 +169,7 @@ function parseBokjiRows(source, html) {
     const cells = [...rowMatch[2].matchAll(/<td([^>]*)>([\s\S]*?)<\/td>/gi)].map((match) => ({ attrs: match[1] || "", html: match[2] || "" }));
     if (cells.length < 5) return null;
     const number = decodeHtml(cells[0].html);
-    if (!number || number === "\uACF5\uC9C0") return null;
+    if (!number || number === "공지") return null;
     const subjectCell = cells[1].html;
     const viewMatch = subjectCell.match(/goView\(['"]?(\d+)['"]?\)/i);
     const linkMatch = subjectCell.match(/<a[^>]*>([\s\S]*?)<\/a>/i);
@@ -140,8 +182,9 @@ function parseBokjiRows(source, html) {
 
 async function fetchBokjiPage(source, page) {
   const suffix = page > 1 ? `?PG=${page}` : "";
-  const response = await fetchWithFallback([`${source.url}${suffix}`, `${source.fallbackUrl}${suffix}`], { method: "GET", redirect: "follow", headers: headersFor(source, { accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8", referer: source.url }) });
-  return parseBokjiRows(source, await response.text());
+  const urls = source.urls.map((url) => `${url}${suffix}`);
+  const html = await textWithFallback(urls, source, { "Referer": source.urls[0] });
+  return parseBokjiRows(source, html);
 }
 
 async function fetchBokjiBiz(source) {
@@ -174,7 +217,7 @@ module.exports = async function handler(req, res) {
       sourceCounts[source.id] = result.value.length;
     } else {
       sourceCounts[source.id] = 0;
-      errors.push({ sourceId: source.id, source: source.name, message: result.reason?.message || "\uC218\uC9D1 \uC2E4\uD328" });
+      errors.push({ sourceId: source.id, source: source.name, message: result.reason?.message || "수집 실패" });
     }
   });
 
@@ -191,7 +234,7 @@ module.exports = async function handler(req, res) {
     cacheSeconds: 180,
     count: uniquePosts.length,
     sourceCounts,
-    sources: SOURCES.map((source) => ({ id: source.id, name: source.name, url: source.pageUrl || source.url })),
+    sources: SOURCES.map((source) => ({ id: source.id, name: source.name, url: source.pageUrl || source.urls[0] })),
     errors,
     posts: uniquePosts,
   });
