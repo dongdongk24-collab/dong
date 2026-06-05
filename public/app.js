@@ -73,6 +73,21 @@ function render() {
     .join("");
 }
 
+function renderHealth(payload) {
+  const counts = payload.sourceCounts || {};
+  const countTextBySource = (payload.sources || [])
+    .map((source) => `${source.name} ${counts[source.id] ?? 0}개`)
+    .join(" · ");
+
+  if (payload.errors && payload.errors.length) {
+    const errorText = payload.errors.map((error) => `${error.source}: ${error.message}`).join(" / ");
+    healthText.textContent = `${countTextBySource} · 오류: ${errorText}`;
+    return;
+  }
+
+  healthText.textContent = countTextBySource;
+}
+
 async function loadPosts({ fresh = false } = {}) {
   refreshBtn.disabled = true;
   refreshBtn.textContent = "갱신 중";
@@ -87,10 +102,7 @@ async function loadPosts({ fresh = false } = {}) {
     state.sources = payload.sources || [];
     renderSources();
     updatedText.textContent = `마지막 갱신 ${payload.updatedAt} · ${payload.cacheSeconds}초 캐시`;
-
-    if (payload.errors && payload.errors.length) {
-      healthText.textContent = `${payload.errors.length}개 출처에서 오류가 있습니다.`;
-    }
+    renderHealth(payload);
     render();
   } catch (error) {
     list.innerHTML = `<div class="empty">게시글을 불러오지 못했습니다: ${escapeHtml(error.message)}</div>`;
