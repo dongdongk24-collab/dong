@@ -52,7 +52,7 @@ function render() {
   countText.textContent = `${posts.length.toLocaleString("ko-KR")}개 글`;
 
   if (posts.length === 0) {
-    list.innerHTML = '<div class="empty">조건에 맞는 지원사업 글이 없습니다.</div>';
+    list.innerHTML = '<div class="empty">조건에 맞는 자원이 없습니다.</div>';
     return;
   }
 
@@ -105,7 +105,7 @@ async function loadPosts({ fresh = false } = {}) {
     renderHealth(payload);
     render();
   } catch (error) {
-    list.innerHTML = `<div class="empty">게시글을 불러오지 못했습니다: ${escapeHtml(error.message)}</div>`;
+    list.innerHTML = `<div class="empty">자원 목록을 불러오지 못했습니다: ${escapeHtml(error.message)}</div>`;
     countText.textContent = "오류";
     updatedText.textContent = "배포된 API 상태를 확인해주세요.";
   } finally {
