@@ -33,11 +33,8 @@ function resolveLink(origin, href) {
   return `${origin}/${href}`;
 }
 
-function parseBoardRows(source, html) {
-  const tbody = html.match(/<tbody[^>]*>([\s\S]*?)<\/tbody>/i);
-  if (!tbody) return [];
-
-  const rows = [...tbody[1].matchAll(/<tr([^>]*)>([\s\S]*?)<\/tr>/gi)];
+function parseRowsFromHtml(source, html) {
+  const rows = [...html.matchAll(/<tr([^>]*)>([\s\S]*?)<\/tr>/gi)];
 
   return rows
     .map((rowMatch) => {
@@ -78,12 +75,32 @@ function parseBoardRows(source, html) {
     .filter(Boolean);
 }
 
+function parseBoardRows(source, html) {
+  const boardTable = html.match(/<table[^>]*class=["'][^"']*bd_lst[^"']*["'][^>]*>([\s\S]*?)<\/table>/i);
+  const scopedHtml = boardTable ? boardTable[1] : html;
+  const posts = parseRowsFromHtml(source, scopedHtml);
+
+  const seen = new Set();
+  return posts.filter((post) => {
+    if (seen.has(post.id)) return false;
+    seen.add(post.id);
+    return true;
+  });
+}
+
+function headersFor(source) {
+  return {
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+    accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "accept-language": "ko-KR,ko;q=0.9,en-US;q=0.7,en;q=0.6",
+    referer: source.origin + "/",
+  };
+}
+
 async function fetchSource(source) {
   const response = await fetch(source.url, {
-    headers: {
-      "user-agent": "Mozilla/5.0 SupportBoardAggregator/1.0",
-      accept: "text/html,application/xhtml+xml",
-    },
+    redirect: "follow",
+    headers: headersFor(source),
   });
 
   if (!response.ok) {
@@ -91,20 +108,29 @@ async function fetchSource(source) {
   }
 
   const html = await response.text();
-  return parseBoardRows(source, html);
+  const posts = parseBoardRows(source, html);
+  if (posts.length === 0) {
+    throw new Error("게시글 목록을 찾지 못했습니다");
+  }
+  return posts;
 }
 
 module.exports = async function handler(req, res) {
   const settled = await Promise.allSettled(SOURCES.map(fetchSource));
   const posts = [];
   const errors = [];
+  const sourceCounts = {};
 
   settled.forEach((result, index) => {
+    const source = SOURCES[index];
     if (result.status === "fulfilled") {
       posts.push(...result.value);
+      sourceCounts[source.id] = result.value.length;
     } else {
+      sourceCounts[source.id] = 0;
       errors.push({
-        source: SOURCES[index].name,
+        sourceId: source.id,
+        source: source.name,
         message: result.reason?.message || "\uC218\uC9D1 \uC2E4\uD328",
       });
     }
@@ -121,6 +147,7 @@ module.exports = async function handler(req, res) {
     updatedAt: new Date().toLocaleString("ko-KR", { timeZone: "Asia/Seoul", hour12: false }),
     cacheSeconds: 180,
     count: posts.length,
+    sourceCounts,
     sources: SOURCES.map(({ id, name, url }) => ({ id, name, url })),
     errors,
     posts,
