@@ -1,0 +1,14 @@
+{
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/api/posts",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "s-maxage=180, stale-while-revalidate=600"
+        }
+      ]
+    }
+  ]
+}
