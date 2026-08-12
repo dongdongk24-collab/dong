@@ -1,6 +1,8 @@
 {
   "cleanUrls": true,
+  "alias": ["dong-review-public-dong9-s-projects.vercel.app"],
   "rewrites": [
+    {"source": "/", "destination": "/review-v2/index.html"},
     {"source": "/review", "destination": "/review-v2/index.html"},
     {"source": "/review/", "destination": "/review-v2/index.html"}
   ],
