@@ -167,7 +167,7 @@ function buildReview({ place, menu, note, length, tone, emoji, features }) {
   return parts.join(' ').replace(/\s+/g, ' ').trim();
 }
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   if (req.method !== 'POST') return res.status(405).json({ error: 'POST only' });
 
@@ -194,4 +194,4 @@ export default async function handler(req, res) {
     features: research.features.map(f => f.label),
     source: research.source
   });
-}
+};
