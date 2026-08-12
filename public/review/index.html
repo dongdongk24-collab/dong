@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#03c75a" />
+  <title>간단 네이버 리뷰 생성기</title>
+  <style>
+    :root{--green:#03c75a;--green2:#02b654;--ink:#17191c;--sub:#737b84;--line:#e8ebee;--bg:#f5f7f8;--card:#fff}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
+    button,input,textarea{font:inherit}.wrap{width:min(100%,680px);margin:0 auto;padding:20px 16px 56px}.hero{padding:10px 4px 20px}.brand{display:flex;align-items:center;gap:8px;color:var(--green2);font-size:13px;font-weight:800;margin-bottom:9px}.dot{width:9px;height:9px;border-radius:50%;background:var(--green)}h1{font-size:clamp(28px,8vw,39px);letter-spacing:-1.4px;line-height:1.16;margin:0}.lead{margin:11px 0 0;color:var(--sub);font-size:15px;line-height:1.65}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:19px;box-shadow:0 10px 28px rgba(0,0,0,.045);margin-bottom:14px}.field{margin-bottom:18px}.field:last-child{margin-bottom:0}.label{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;margin-bottom:8px}.optional{font-size:11px;color:#9ba2aa;font-weight:600}.input,.textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px 15px;outline:none;color:var(--ink);transition:.15s}.textarea{min-height:96px;resize:vertical;line-height:1.55}.input:focus,.textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(3,199,90,.10)}.hint{font-size:12px;color:#9299a1;line-height:1.5;margin-top:7px}.section-label{font-size:13px;font-weight:800;margin-bottom:9px}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;color:#4a5057;font-size:13px;font-weight:700;cursor:pointer}.chip.active{border-color:rgba(3,199,90,.25);background:rgba(3,199,90,.09);color:#029747}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.toggle-row{display:flex;align-items:center;justify-content:space-between;padding-top:2px}.toggle-copy strong{display:block;font-size:14px}.toggle-copy span{display:block;color:var(--sub);font-size:12px;margin-top:2px}.switch{position:relative;width:50px;height:29px}.switch input{display:none}.slider{position:absolute;inset:0;background:#d7dbe0;border-radius:999px;transition:.2s;cursor:pointer}.slider:before{content:"";position:absolute;width:23px;height:23px;left:3px;top:3px;background:#fff;border-radius:50%;box-shadow:0 2px 5px rgba(0,0,0,.18);transition:.2s}.switch input:checked+.slider{background:var(--green)}.switch input:checked+.slider:before{transform:translateX(21px)}.primary{width:100%;border:0;border-radius:15px;background:var(--green);color:#fff;min-height:54px;font-weight:900;font-size:16px;cursor:pointer;margin-top:18px}.primary:active,.btn:active{transform:scale(.99)}.result-card{display:none}.result-card.show{display:block}.result-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:11px}.result-title{font-size:15px;font-weight:900}.tag{font-size:11px;font-weight:800;color:#029747;background:rgba(3,199,90,.09);padding:5px 9px;border-radius:999px}.review{background:#f8faf9;border:1px solid #e4eee7;border-radius:16px;padding:17px;font-size:16px;line-height:1.76;white-space:pre-wrap;word-break:keep-all;min-height:96px}.count{text-align:right;margin-top:6px;color:#9aa0a6;font-size:11px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.btn{border:0;border-radius:13px;min-height:46px;font-weight:800;cursor:pointer}.reroll{background:#f0f2f4;color:#34393e}.copy{background:#202326;color:#fff}.history-title{font-size:14px;font-weight:900;margin-bottom:10px}.history{display:grid;gap:8px}.history-item{border:1px solid var(--line);border-radius:13px;padding:11px 12px;background:#fff;cursor:pointer}.history-place{font-size:12px;font-weight:800;margin-bottom:4px}.history-text{font-size:12px;color:#687078;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.empty{font-size:12px;color:#9aa0a6}.footer{text-align:center;color:#a0a6ad;font-size:11px;line-height:1.6;padding:5px 8px}.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(10px);background:#202326;color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;font-weight:800;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}@media(max-width:520px){.wrap{padding-top:12px}.card{border-radius:18px;padding:17px}.two{grid-template-columns:1fr;gap:15px}.actions{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <div class="brand"><span class="dot"></span>간단 리뷰 메이커</div>
+      <h1>오늘 다녀온 곳,<br>간단하게 리뷰로.</h1>
+      <p class="lead">상호명만 넣어도 되고, 먹은 메뉴나 느낀 점을 적으면 자연스럽게 반영해 드려요.</p>
+    </section>
+
+    <section class="card">
+      <div class="field">
+        <div class="label">상호명 또는 장소명</div>
+        <input id="place" class="input" placeholder="예: C27 다운타운" autocomplete="off" />
+      </div>
+      <div class="field">
+        <div class="label">먹은 메뉴 <span class="optional">선택</span></div>
+        <input id="menu" class="input" placeholder="예: 디카페인 아메리카노, 옥수수라떼" autocomplete="off" />
+      </div>
+      <div class="field">
+        <div class="label">꼭 넣고 싶은 내용 <span class="optional">선택</span></div>
+        <textarea id="note" class="textarea" placeholder="예: 옥수수라떼가 고소했고, 카페가 넓어서 쉬기 좋았음"></textarea>
+        <div class="hint">말하듯 짧게 적어도 괜찮아요. 입력한 표현은 자연스러운 문장으로 다듬어 반영합니다.</div>
+      </div>
+
+      <div class="two">
+        <div>
+          <div class="section-label">리뷰 길이</div>
+          <div class="chips" id="lengthChips">
+            <button class="chip" data-value="아주 짧게">아주 짧게</button>
+            <button class="chip active" data-value="짧게">짧게</button>
+            <button class="chip" data-value="보통">보통</button>
+          </div>
+        </div>
+        <div>
+          <div class="section-label">말투</div>
+          <div class="chips" id="toneChips">
+            <button class="chip active" data-value="자연스럽게">자연스럽게</button>
+            <button class="chip" data-value="담백하게">담백하게</button>
+            <button class="chip" data-value="밝게">밝게</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="toggle-row" style="margin-top:18px">
+        <div class="toggle-copy"><strong>이모지 사용</strong><span>과하지 않게 0~2개 정도</span></div>
+        <label class="switch"><input id="emoji" type="checkbox" checked><span class="slider"></span></label>
+      </div>
+
+      <button class="primary" id="generate">✨ 리뷰 만들어줘</button>
+    </section>
+
+    <section class="card result-card" id="resultCard">
+      <div class="result-top"><div class="result-title">생성된 리뷰</div><div class="tag">네이버 리뷰용</div></div>
+      <div class="review" id="review"></div>
+      <div class="count" id="count"></div>
+      <div class="actions">
+        <button class="btn reroll" id="reroll">↻ 다시 만들기</button>
+        <button class="btn copy" id="copy">복사하기</button>
+      </div>
+    </section>
+
+    <section class="card" id="historyCard">
+      <div class="history-title">최근 만든 리뷰</div>
+      <div class="history" id="history"></div>
+    </section>
+
+    <div class="footer">입력하지 않은 구체적인 메뉴·가격·서비스·주차 정보는 임의로 추가하지 않도록 구성했습니다.</div>
+  </main>
+  <div class="toast" id="toast">복사됐어요</div>
+
+<script>
+  const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+  let length='짧게', tone='자연스럽게';
+  let lastSignature='';
+
+  function wireChips(root, setter){
+    root.addEventListener('click',e=>{
+      const b=e.target.closest('.chip'); if(!b)return;
+      [...root.querySelectorAll('.chip')].forEach(x=>x.classList.remove('active'));
+      b.classList.add('active'); setter(b.dataset.value);
+    });
+  }
+  wireChips($('#lengthChips'),v=>length=v);
+  wireChips($('#toneChips'),v=>tone=v);
+
+  const pick=a=>a[Math.floor(Math.random()*a.length)];
+  const tidy=s=>s.replace(/\s+/g,' ').trim();
+  const polishNote=s=>{
+    let t=tidy(s).replace(/[.!?]+$/,'');
+    const reps=[[/했음$/,'했어요'],[/좋았음$/,'좋았어요'],[/맛있었음$/,'맛있었어요'],[/괜찮았음$/,'괜찮았어요'],[/아쉬웠음$/,'아쉬웠어요'],[/넓었음$/,'넓었어요'],[/편했음$/,'편했어요'],[/였음$/,'였어요'],[/임$/,'이에요']];
+    for(const [r,v] of reps){if(r.test(t)){t=t.replace(r,v);break}}
+    if(!/[요다죠네]$/.test(t) && !/[.!?]$/.test(t)) t+='어요';
+    return t.replace('했어요어요','했어요').replace('좋았어요어요','좋았어요').replace('맛있었어요어요','맛있었어요')+'.';
+  };
+  const hasNegative=s=>/(아쉽|별로|불편|짜|싱겁|비싸|느리|시끄|좁|대기|기다|실망)/.test(s);
+
+  function makeReview(){
+    const place=tidy($('#place').value), menu=tidy($('#menu').value), note=tidy($('#note').value), emoji=$('#emoji').checked;
+    if(!place){$('#place').focus(); toast('상호명이나 장소명을 입력해 주세요');return}
+    const neg=hasNegative(note);
+    const e=emoji?(tone==='밝게'?pick([' 😊',' 👍',' ✨',' 😋']):pick(['',' 😊',' 👍'])):'';
+    const open={
+      '자연스럽게': [`${place} 다녀왔어요!`,`${place} 방문했어요.`,`${place}에 다녀왔는데 전체적으로 편하게 이용했어요.`],
+      '담백하게': [`${place} 방문했습니다.`,`${place}에 다녀왔어요.`,`${place} 이용해봤어요.`],
+      '밝게': [`${place} 다녀왔어요!${e}`,`${place} 방문했는데 기분 좋게 다녀왔어요!${e}`,`${place} 처음 가봤는데 좋았어요!${e}`]
+    }[tone];
+    const menuLines=menu?[
+      `${menu}로 주문했어요.`,
+      `${menu} 먹어봤어요.`,
+      `이번에는 ${menu} 주문해서 먹었어요.`
+    ]:[];
+    const noteLine=note?polishNote(note):'';
+    const neutralClose=neg?[
+      '전체적으로는 무난하게 이용했어요.',
+      '좋았던 점과 아쉬운 점이 함께 있었어요.',
+      '다음에는 다른 메뉴도 한 번 먹어보고 싶어요.'
+    ]:[
+      `부담 없이 들르기 좋았어요.${e}`,
+      `전체적으로 만족스럽게 다녀왔어요.${e}`,
+      `다음에 근처 가면 또 들러보고 싶어요.${e}`,
+      `편하게 시간 보내고 왔어요.${e}`
+    ];
+
+    let parts=[];
+    if(length==='아주 짧게'){
+      const core=noteLine || (menu?pick(menuLines):pick(neutralClose));
+      parts=[pick(open),core];
+    } else if(length==='짧게'){
+      parts=[pick(open)];
+      if(menu) parts.push(pick(menuLines));
+      if(noteLine) parts.push(noteLine);
+      if(!noteLine || parts.length<3) parts.push(pick(neutralClose));
+    } else {
+      parts=[pick(open)];
+      if(menu) parts.push(pick(menuLines));
+      if(noteLine) parts.push(noteLine);
+      if(!noteLine) parts.push('전체적으로 부담 없이 이용하기 좋았어요.');
+      parts.push(pick(neutralClose));
+    }
+
+    let text=parts.join(' ').replace(/\s+([.!?])/g,'$1').replace(/\.\./g,'.');
+    const sig=text;
+    if(sig===lastSignature){ text=text.replace(parts[0],open[(open.indexOf(parts[0])+1)%open.length]); }
+    lastSignature=text;
+    $('#review').textContent=text;
+    $('#count').textContent=`${text.length}자`;
+    $('#resultCard').classList.add('show');
+    saveHistory({place,menu,note,length,tone,emoji,text,at:Date.now()});
+    renderHistory();
+    $('#resultCard').scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  function saveHistory(item){
+    try{const a=JSON.parse(localStorage.getItem('simpleReviewHistory')||'[]');a.unshift(item);localStorage.setItem('simpleReviewHistory',JSON.stringify(a.slice(0,8)))}catch(e){}
+  }
+  function renderHistory(){
+    let a=[];try{a=JSON.parse(localStorage.getItem('simpleReviewHistory')||'[]')}catch(e){}
+    const root=$('#history');root.innerHTML='';
+    if(!a.length){root.innerHTML='<div class="empty">아직 만든 리뷰가 없어요.</div>';return}
+    a.slice(0,5).forEach((x,i)=>{
+      const el=document.createElement('div');el.className='history-item';el.innerHTML=`<div class="history-place"></div><div class="history-text"></div>`;
+      el.querySelector('.history-place').textContent=x.place;el.querySelector('.history-text').textContent=x.text;
+      el.onclick=()=>{$('#review').textContent=x.text;$('#count').textContent=`${x.text.length}자`;$('#resultCard').classList.add('show');$('#resultCard').scrollIntoView({behavior:'smooth',block:'nearest'})};
+      root.appendChild(el);
+    });
+  }
+  async function copyReview(){const t=$('#review').textContent.trim();if(!t)return;try{await navigator.clipboard.writeText(t)}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}toast('리뷰를 복사했어요')}
+  function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove('show'),1400)}
+  $('#generate').onclick=makeReview;$('#reroll').onclick=makeReview;$('#copy').onclick=copyReview;
+  document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')makeReview()});
+  renderHistory();
+</script>
+</body>
+</html>
