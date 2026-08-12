@@ -8,10 +8,14 @@
   <style>
     :root{--green:#03c75a;--green2:#02a94c;--ink:#17191c;--sub:#737b84;--line:#e7eaed;--bg:#f5f7f8;--card:#fff;--red:#e5484d}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
-    button,input,textarea{font:inherit}.wrap{width:min(100%,680px);margin:0 auto;padding:18px 16px 56px}.hero{padding:10px 4px 20px}.brand{display:flex;align-items:center;gap:8px;color:var(--green2);font-size:13px;font-weight:850;margin-bottom:9px}.dot{width:9px;height:9px;border-radius:50%;background:var(--green)}h1{font-size:clamp(28px,8vw,39px);letter-spacing:-1.4px;line-height:1.16;margin:0}.lead{margin:11px 0 0;color:var(--sub);font-size:15px;line-height:1.65}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:19px;box-shadow:0 10px 28px rgba(0,0,0,.045);margin-bottom:14px}.field{margin-bottom:18px}.label{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:850;margin-bottom:8px}.optional{font-size:11px;color:#9ba2aa;font-weight:650}.input,.textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px 15px;outline:none;color:var(--ink)}.textarea{min-height:96px;resize:vertical;line-height:1.55}.input:focus,.textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(3,199,90,.10)}.hint{font-size:12px;color:#9299a1;line-height:1.5;margin-top:7px}.section-label{font-size:13px;font-weight:850;margin-bottom:9px}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;color:#4a5057;font-size:13px;font-weight:750;cursor:pointer}.chip.active{border-color:rgba(3,199,90,.25);background:rgba(3,199,90,.09);color:#029747}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:15px}.toggle-copy strong{display:block;font-size:14px}.toggle-copy span{display:block;color:var(--sub);font-size:12px;margin-top:2px;line-height:1.45}.switch{position:relative;width:50px;height:29px;flex:0 0 auto}.switch input{display:none}.slider{position:absolute;inset:0;background:#d7dbe0;border-radius:999px;transition:.2s;cursor:pointer}.slider:before{content:"";position:absolute;width:23px;height:23px;left:3px;top:3px;background:#fff;border-radius:50%;box-shadow:0 2px 5px rgba(0,0,0,.18);transition:.2s}.switch input:checked+.slider{background:var(--green)}.switch input:checked+.slider:before{transform:translateX(21px)}
-    .receipt-box{border:1px dashed #cfd6db;border-radius:16px;padding:14px;background:#fbfcfc;margin-bottom:18px}.receipt-title{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;font-weight:850;margin-bottom:7px}.privacy{font-size:11px;color:#029747;background:rgba(3,199,90,.08);padding:5px 8px;border-radius:999px;white-space:nowrap}.receipt-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.file-label,.small-btn{border:1px solid var(--line);background:#fff;color:#34393e;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:800;cursor:pointer}.small-btn:disabled{opacity:.45;cursor:default}.small-btn.green{background:#eaf9f0;border-color:#cfeedd;color:#029747}.small-btn.danger{color:#c7353b;background:#fff5f5;border-color:#f2d6d8}.receipt-preview{display:none;margin-top:12px}.receipt-preview.show{display:block}.receipt-preview img{display:block;width:100%;max-height:280px;object-fit:contain;border-radius:12px;background:#f1f3f5}.ocr-status{margin-top:9px;font-size:12px;line-height:1.55;color:#687078}.ocr-status.good{color:#087a3b}.ocr-status.warn{color:#a15c00}.ocr-progress{height:5px;background:#e9edf0;border-radius:999px;overflow:hidden;margin-top:8px;display:none}.ocr-progress.show{display:block}.ocr-progress>span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}.auto-badge{display:none;margin-top:10px;padding:9px 11px;border-radius:12px;background:#edf9f1;border:1px solid #d7efdf;color:#087a3b;font-size:12px;line-height:1.5}.auto-badge.show{display:block}
-    .primary{width:100%;border:0;border-radius:15px;background:var(--green);color:#fff;min-height:54px;font-weight:900;font-size:16px;cursor:pointer;margin-top:18px}.primary:disabled{opacity:.62;cursor:wait}.result-card{display:none}.result-card.show{display:block}.result-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:11px}.result-title{font-size:15px;font-weight:900}.tag{font-size:11px;font-weight:850;color:#029747;background:rgba(3,199,90,.09);padding:5px 9px;border-radius:999px}.tag.gray{color:#687078;background:#f0f2f4}.research{display:none;margin:0 0 10px;padding:10px 12px;border-radius:12px;background:#f7faf8;border:1px solid #e6eee8;font-size:12px;color:#64706a;line-height:1.5}.research.show{display:block}.review{background:#f8faf9;border:1px solid #e4eee7;border-radius:16px;padding:17px;font-size:16px;line-height:1.76;white-space:pre-wrap;word-break:keep-all;min-height:96px}.count{text-align:right;margin-top:6px;color:#9aa0a6;font-size:11px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.btn{border:0;border-radius:13px;min-height:46px;font-weight:850;cursor:pointer}.reroll{background:#f0f2f4;color:#34393e}.copy{background:#202326;color:#fff}.history-title{font-size:14px;font-weight:900;margin-bottom:10px}.history{display:grid;gap:8px}.history-item{position:relative;border:1px solid var(--line);border-radius:14px;padding:12px 48px 12px 13px;background:#fff;cursor:pointer}.history-place{font-size:12px;font-weight:850;margin-bottom:4px}.history-text{font-size:12px;color:#687078;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.history-delete{position:absolute;top:50%;right:10px;transform:translateY(-50%);width:32px;height:32px;border:1px solid #f0d6d8;border-radius:50%;background:#fff5f5;color:var(--red);font-size:21px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}.history-delete:active{transform:translateY(-50%) scale(.93)}.empty{font-size:12px;color:#9aa0a6}.footer{text-align:center;color:#a0a6ad;font-size:11px;line-height:1.6;padding:5px 8px}.toast{position:fixed;left:50%;bottom:28px;z-index:20;transform:translateX(-50%) translateY(10px);background:#202326;color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;font-weight:800;opacity:0;pointer-events:none;transition:.2s;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-    @media(max-width:520px){.wrap{padding-top:12px}.card{border-radius:18px;padding:17px}.two{grid-template-columns:1fr;gap:15px}.receipt-title{align-items:flex-start}.privacy{white-space:normal;text-align:right}}
+    button,input,textarea{font:inherit}.wrap{width:min(100%,680px);margin:0 auto;padding:18px 16px 56px}.hero{padding:10px 4px 20px}.brand{display:flex;align-items:center;gap:8px;color:var(--green2);font-size:13px;font-weight:800;margin-bottom:9px}.dot{width:9px;height:9px;border-radius:50%;background:var(--green)}h1{font-size:clamp(28px,8vw,39px);letter-spacing:-1.4px;line-height:1.16;margin:0}.lead{margin:11px 0 0;color:var(--sub);font-size:15px;line-height:1.65}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:19px;box-shadow:0 10px 28px rgba(0,0,0,.045);margin-bottom:14px}.field{margin-bottom:18px}.label{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;margin-bottom:8px}.optional{font-size:11px;color:#9ba2aa;font-weight:600}.input,.textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:14px 15px;outline:none;color:var(--ink)}.textarea{min-height:96px;resize:vertical;line-height:1.55}.input:focus,.textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(3,199,90,.10)}.hint{font-size:12px;color:#9299a1;line-height:1.5;margin-top:7px}
+    .receipt-box{border:1px dashed #cfd6db;border-radius:16px;padding:14px;background:#fbfcfc;margin-bottom:18px}.receipt-title{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px;font-weight:800;margin-bottom:7px}.privacy{font-size:11px;color:#029747;background:rgba(3,199,90,.08);padding:5px 8px;border-radius:999px}.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.upload-btn,.small-btn{display:flex;align-items:center;justify-content:center;min-height:46px;border:1px solid var(--line);background:#fff;color:#34393e;border-radius:13px;padding:10px 12px;font-size:13px;font-weight:800;cursor:pointer;text-align:center}.upload-btn.primary-upload{background:#eaf9f0;border-color:#cfeedd;color:#029747}.small-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.small-btn{min-height:40px;padding:8px 11px}.small-btn:disabled{opacity:.45;cursor:default}.small-btn.danger{color:#c7353b;background:#fff5f5;border-color:#f2d6d8}.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+    .receipt-preview{display:none;margin-top:12px}.receipt-preview.show{display:block}.receipt-preview img{display:block;width:100%;max-height:320px;object-fit:contain;border-radius:12px;background:#eef1f3}.selected-name{font-size:11px;color:#7a828a;margin-top:7px;word-break:break-all}.ocr-status{margin-top:9px;font-size:12px;line-height:1.55;color:#687078}.ocr-status.good{color:#087a3b}.ocr-status.warn{color:#a15c00}.ocr-progress{height:5px;background:#e9edf0;border-radius:999px;overflow:hidden;margin-top:8px;display:none}.ocr-progress.show{display:block}.ocr-progress>span{display:block;height:100%;width:0;background:var(--green);transition:width .2s}.auto-badge{display:none;margin-top:10px;padding:10px 11px;border-radius:12px;background:#edf9f1;border:1px solid #d7efdf;color:#087a3b;font-size:12px;line-height:1.5}.auto-badge.show{display:block}
+    .section-label{font-size:13px;font-weight:800;margin-bottom:9px}.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 13px;color:#4a5057;font-size:13px;font-weight:700;cursor:pointer}.chip.active{border-color:rgba(3,199,90,.25);background:rgba(3,199,90,.09);color:#029747}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:15px}.toggle-copy strong{display:block;font-size:14px}.toggle-copy span{display:block;color:var(--sub);font-size:12px;margin-top:2px;line-height:1.45}.switch{position:relative;width:50px;height:29px;flex:0 0 auto}.switch input{display:none}.slider{position:absolute;inset:0;background:#d7dbe0;border-radius:999px;transition:.2s;cursor:pointer}.slider:before{content:"";position:absolute;width:23px;height:23px;left:3px;top:3px;background:#fff;border-radius:50%;box-shadow:0 2px 5px rgba(0,0,0,.18);transition:.2s}.switch input:checked+.slider{background:var(--green)}.switch input:checked+.slider:before{transform:translateX(21px)}
+    .primary{width:100%;border:0;border-radius:15px;background:var(--green);color:#fff;min-height:54px;font-weight:900;font-size:16px;cursor:pointer;margin-top:18px}.primary:disabled{opacity:.6;cursor:wait}.result-card{display:none}.result-card.show{display:block}.result-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:11px}.result-title{font-size:15px;font-weight:900}.tag{font-size:11px;font-weight:800;color:#029747;background:rgba(3,199,90,.09);padding:5px 9px;border-radius:999px}.tag.gray{color:#687078;background:#f0f2f4}.research{display:none;margin:0 0 10px;padding:10px 12px;border-radius:12px;background:#f7faf8;border:1px solid #e6eee8;font-size:12px;color:#64706a;line-height:1.5}.research.show{display:block}.review{background:#f8faf9;border:1px solid #e4eee7;border-radius:16px;padding:17px;font-size:16px;line-height:1.76;white-space:pre-wrap;word-break:keep-all;min-height:96px}.count{text-align:right;margin-top:6px;color:#9aa0a6;font-size:11px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}.btn{border:0;border-radius:13px;min-height:46px;font-weight:800;cursor:pointer}.reroll{background:#f0f2f4;color:#34393e}.copy{background:#202326;color:#fff}
+    .history-title{font-size:14px;font-weight:900;margin-bottom:10px}.history{display:grid;gap:8px}.history-item{position:relative;border:1px solid var(--line);border-radius:14px;padding:12px 48px 12px 13px;background:#fff;cursor:pointer}.history-place{font-size:12px;font-weight:800;margin-bottom:4px}.history-text{font-size:12px;color:#687078;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.history-delete{position:absolute;top:50%;right:10px;transform:translateY(-50%);width:32px;height:32px;border:1px solid #f0d6d8;border-radius:50%;background:#fff5f5;color:var(--red);font-size:21px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}.history-delete:active{transform:translateY(-50%) scale(.93)}.empty{font-size:12px;color:#9aa0a6}.footer{text-align:center;color:#a0a6ad;font-size:11px;line-height:1.6;padding:5px 8px}.toast{position:fixed;left:50%;bottom:28px;z-index:20;transform:translateX(-50%) translateY(10px);background:#202326;color:#fff;padding:10px 14px;border-radius:999px;font-size:12px;font-weight:800;opacity:0;pointer-events:none;transition:.2s;white-space:nowrap}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    @media(max-width:520px){.wrap{padding-top:12px}.card{border-radius:18px;padding:17px}.two{grid-template-columns:1fr;gap:15px}.receipt-title{align-items:flex-start}.upload-grid{grid-template-columns:1fr 1fr}}
   </style>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/tesseract.min.js"></script>
 </head>
@@ -20,20 +24,27 @@
   <section class="hero">
     <div class="brand"><span class="dot"></span>간단 리뷰 메이커</div>
     <h1>영수증 한 장이면,<br>매장 검색부터 리뷰까지.</h1>
-    <p class="lead">영수증 사진의 방향까지 자동으로 확인해 상호명과 메뉴를 읽고, 공개된 매장 정보·후기를 검색해 리뷰를 만듭니다. 직접 입력도 가능합니다.</p>
+    <p class="lead">갤러리 사진을 고르거나 바로 촬영하면 영수증에서 상호명과 메뉴를 읽고, 매장 정보와 공개 후기를 검색해 리뷰를 만듭니다.</p>
   </section>
 
   <section class="card">
     <div class="receipt-box">
       <div class="receipt-title"><span>🧾 영수증 자동 리뷰</span><span class="privacy">원본 사진 저장 안 함</span></div>
-      <div class="hint">사진을 고르면 자동으로 방향 보정 → OCR → 상호명·메뉴 확인 → 매장 검색 → 리뷰 생성까지 진행합니다.</div>
-      <div class="receipt-actions">
-        <label class="file-label" for="receiptFile">📷 영수증 선택 / 촬영</label>
-        <input id="receiptFile" type="file" accept="image/*" capture="environment" hidden>
-        <button class="small-btn green" id="retryReceipt" type="button" disabled>다시 인식</button>
+      <div class="hint">사진 선택과 카메라 촬영을 분리했습니다. 사진이 선택되면 먼저 화면에 미리보기를 띄운 뒤 자동 인식을 시작합니다.</div>
+      <div class="upload-grid">
+        <label class="upload-btn primary-upload" for="galleryInput">🖼️ 갤러리에서 선택</label>
+        <label class="upload-btn" for="cameraInput">📷 바로 촬영</label>
+      </div>
+      <input id="galleryInput" class="visually-hidden" type="file" accept="image/*">
+      <input id="cameraInput" class="visually-hidden" type="file" accept="image/*" capture="environment">
+      <div class="small-row">
+        <button class="small-btn" id="retryReceipt" type="button" disabled>다시 인식</button>
         <button class="small-btn danger" id="clearReceipt" type="button" style="display:none">사진 지우기</button>
       </div>
-      <div class="receipt-preview" id="receiptPreview"><img id="receiptImg" alt="영수증 미리보기"></div>
+      <div class="receipt-preview" id="receiptPreview">
+        <img id="receiptImg" alt="선택한 영수증 미리보기">
+        <div class="selected-name" id="selectedName"></div>
+      </div>
       <div class="ocr-progress" id="ocrProgress"><span id="ocrBar"></span></div>
       <div class="ocr-status" id="ocrStatus"></div>
       <div class="auto-badge" id="autoBadge"></div>
@@ -42,11 +53,10 @@
     <div class="field">
       <div class="label">상호명 또는 장소명 <span class="optional">영수증이면 자동</span></div>
       <input id="place" class="input" placeholder="직접 입력할 때만 적어주세요" autocomplete="off" />
-      <div class="hint">자동 인식이 확실하지 않으면 엉뚱한 리뷰를 만들지 않고 멈추도록 바꿨습니다.</div>
     </div>
     <div class="field">
       <div class="label">먹은 메뉴 <span class="optional">영수증이면 자동</span></div>
-      <input id="menu" class="input" placeholder="직접 입력하거나 자동 인식 결과를 수정할 수 있어요" autocomplete="off" />
+      <input id="menu" class="input" placeholder="자동 인식 결과를 직접 수정할 수도 있어요" autocomplete="off" />
     </div>
     <div class="field">
       <div class="label">꼭 넣고 싶은 내용 <span class="optional">선택</span></div>
@@ -70,7 +80,7 @@
   </section>
 
   <section class="card"><div class="history-title">최근 만든 리뷰</div><div class="history" id="history"></div></section>
-  <div class="footer">영수증 원본 사진은 서버·Google Drive·최근 리뷰에 저장하지 않습니다. OCR은 이 기기의 브라우저에서 처리되고, 최근 리뷰에는 텍스트만 브라우저에 저장됩니다.</div>
+  <div class="footer">영수증 원본 사진은 서버·Google Drive·최근 리뷰에 저장하지 않습니다. 사진은 이 브라우저에서만 임시로 열고 OCR 처리합니다.</div>
 </main>
 <div class="toast" id="toast">복사됐어요</div>
 
@@ -81,187 +91,83 @@ function wire(root,setter){root.addEventListener('click',e=>{const b=e.target.cl
 wire($('#lengthChips'),v=>length=v);wire($('#toneChips'),v=>tone=v);
 const tidy=s=>String(s||'').replace(/\s+/g,' ').trim();
 function payload(){return{place:tidy($('#place').value),menu:tidy($('#menu').value),note:tidy($('#note').value),length,tone,emoji:$('#emoji').checked}}
-function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove('show'),1700)}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(window.__toast);window.__toast=setTimeout(()=>t.classList.remove('show'),1700)}
 
-function clearReceipt(resetInput=true){
+function clearReceipt(resetInputs=true){
   if(receiptUrl){URL.revokeObjectURL(receiptUrl);receiptUrl=null}
   receiptFile=null;receiptBusy=false;
-  $('#receiptImg').removeAttribute('src');$('#receiptPreview').classList.remove('show');
-  $('#retryReceipt').disabled=true;$('#clearReceipt').style.display='none';
-  $('#ocrStatus').textContent='';$('#ocrStatus').className='ocr-status';$('#autoBadge').classList.remove('show');$('#autoBadge').textContent='';
-  $('#ocrProgress').classList.remove('show');$('#ocrBar').style.width='0%';
-  if(resetInput)$('#receiptFile').value='';
+  $('#receiptImg').removeAttribute('src');$('#receiptPreview').classList.remove('show');$('#selectedName').textContent='';
+  $('#retryReceipt').disabled=true;$('#clearReceipt').style.display='none';$('#ocrStatus').textContent='';$('#ocrStatus').className='ocr-status';
+  $('#ocrProgress').classList.remove('show');$('#ocrBar').style.width='0%';$('#autoBadge').classList.remove('show');$('#autoBadge').textContent='';
+  if(resetInputs){$('#galleryInput').value='';$('#cameraInput').value=''}
 }
 $('#clearReceipt').onclick=()=>clearReceipt(true);
 
 function cleanLine(s){return String(s||'').replace(/[|_*~=]+/g,' ').replace(/\s+/g,' ').trim()}
-const metaBad=/(영수증|receipt|사업자|사업자번호|대표자?|주소|전화|tel|승인|카드|신용|결제|합계|총액|부가세|부가가치|공급가|과세|면세|현금|거스름|주문번호|포스|pos|일시|날짜|table|고객|매출|가맹|승인번호|할인|수량|단가|금액|vat|인쇄일자|계산일자|품명|상품명|메뉴명)/i;
-const headerOnly=/^(품명|상품명|메뉴|메뉴명|수량|단가|금액|합계|total|amount|qty|price)[\s.:\-]*$/i;
-
-function weirdRatio(s){
-  const all=[...s].filter(c=>!\s/.test(c));if(!all.length)return 1;
-  const good=all.filter(c=>/[가-힣A-Za-z0-9.,()&+\-\/]/.test(c)).length;
-  return 1-good/all.length;
-}
+const metaBad=/(영수증|receipt|품명|상품명|메뉴명|수량|단가|금액|합계|총액|공급가|부가|과세|면세|결제|카드|현금|거스름|할인|승인|승인번호|사업자|사업자번호|대표|대표자|주소|전화|tel|포스|pos|주문번호|계산일|계산일자|인쇄일|인쇄일자|발행일|날짜|일시|vat|table)/i;
+function weirdRatio(s){const all=[...String(s||'')].filter(c=>!\s/.test(c));if(!all.length)return 1;const good=all.filter(c=>/[가-힣A-Za-z0-9.,()&+\-\/]/.test(c)).length;return 1-good/all.length}
 function scorePlace(line,index){
-  const letters=(line.match(/[가-힣A-Za-z]/g)||[]).length;
-  if(letters<2||line.length<2||line.length>34||headerOnly.test(line))return -999;
-  let score=0;
-  if(index<4)score+=7;else if(index<8)score+=4;else if(index<14)score+=2;
-  if(line.length<=20)score+=4;
-  if(/[가-힣]{2,}|[A-Za-z]{3,}/.test(line))score+=3;
+  const letters=(line.match(/[가-힣A-Za-z]/g)||[]).length;if(letters<2||line.length<2||line.length>34||metaBad.test(line))return -999;
+  let score=0;if(index<4)score+=8;else if(index<8)score+=4;if(line.length<=20)score+=4;if(/[가-힣]{2,}|[A-Za-z]{3,}/.test(line))score+=3;
   if(/(카페|커피|식당|치킨|피자|베이커리|coffee|cafe|restaurant|house|kitchen|bar)/i.test(line))score+=4;
-  if(metaBad.test(line))score-=18;
-  if(/\d{2,}[.:\-/]\d{1,2}|20\d{2}|\d{2,3}-\d{3,4}-\d{4}|\d{3,}\s*원/.test(line))score-=12;
-  if(weirdRatio(line)>.18)score-=12;
-  if(/[°<>\\]{1,}|\b(?:METR|QIN|ED|AT)\b/i.test(line))score-=10;
-  return score;
+  if(/\d{2,}[.:\-/]\d{1,2}|20\d{2}|\d{2,3}-\d{3,4}-\d{4}|\d{3,}\s*원/.test(line))score-=12;if(weirdRatio(line)>.18)score-=12;if(/[°<>\\]/.test(line))score-=8;return score;
 }
-function normalizeMerchant(s){
-  return cleanLine(s)
-    .replace(/^(상호명?|가맹점명?|매장명|업체명)\s*[:：-]?\s*/i,'')
-    .replace(/\s*(사업자|대표자?|주소|전화).*$/i,'')
-    .replace(/^[-#*\s]+|[-#*\s]+$/g,'').trim();
-}
+function normalizeMerchant(s){return cleanLine(s).replace(/^(상호명?|가맹점명?|매장명|업체명)\s*[:：-]?\s*/i,'').replace(/\s*(사업자|대표자?|주소|전화).*$/i,'').replace(/^[-#*\s]+|[-#*\s]+$/g,'').trim()}
 function parseReceipt(raw){
-  const lines=String(raw||'').split(/\r?\n/).map(cleanLine).filter(Boolean);
-  let explicit='';
+  const lines=String(raw||'').split(/\r?\n/).map(cleanLine).filter(Boolean);let explicit='';
+  for(const x of lines){const m=x.match(/(?:상호명?|가맹점명?|매장명|업체명)\s*[:：-]?\s*(.{2,40})/i);if(m){const c=normalizeMerchant(m[1]);if(c&&!metaBad.test(c)&&weirdRatio(c)<.18){explicit=c;break}}}
+  let bestLine='',bestScore=-999,bestIndex=-1;lines.slice(0,18).forEach((x,i)=>{const s=scorePlace(x,i);if(s>bestScore){bestScore=s;bestLine=x;bestIndex=i}});
+  const place=explicit||normalizeMerchant(bestLine);const placeConf=explicit?1:Math.max(0,Math.min(1,(bestScore-2)/10));const menus=[];
   for(const x of lines){
-    const m=x.match(/(?:상호명?|가맹점명?|매장명|업체명)\s*[:：-]?\s*(.{2,40})/i);
-    if(m){const c=normalizeMerchant(m[1]);if(c&&!metaBad.test(c)&&weirdRatio(c)<.18){explicit=c;break}}
+    if(metaBad.test(x)||x===place)continue;const hasPrice=/\d{1,3}(?:,\d{3})+\s*원?|\b\d{3,6}\s*원\b/.test(x);if(!hasPrice)continue;
+    let name=x.replace(/\s+[xX]?\d+\s*(개|EA)?\s*[\d,]*\s*원?\s*$/i,'').replace(/[\s.:\-]*\d{1,3}(?:,\d{3})+\s*원?\s*$/,'').replace(/[\s.:\-]*\d{3,6}\s*원\s*$/,'').replace(/^\d+\s+/,'').trim();
+    name=name.replace(/^[^가-힣A-Za-z]+/,'').trim();if(name.length>=2&&name.length<=36&&(name.match(/[가-힣A-Za-z]/g)||[]).length>=2&&!metaBad.test(name)&&weirdRatio(name)<.22&&!menus.includes(name))menus.push(name)
   }
-  let bestLine='',bestScore=-999,bestIndex=-1;
-  lines.slice(0,18).forEach((x,i)=>{const s=scorePlace(x,i);if(s>bestScore){bestScore=s;bestLine=x;bestIndex=i}});
-  const place=explicit||normalizeMerchant(bestLine);
-  const placeConf=explicit?1:Math.max(0,Math.min(1,(bestScore-2)/10));
-  const menus=[];
-  const menuBad=/(합계|총액|부가|공급|과세|면세|결제|카드|현금|거스름|할인|사업자|대표|주소|전화|승인|인쇄|계산|주문번호|수량|단가|금액|품명|상품명|메뉴명|vat)/i;
-  for(const x of lines){
-    if(menuBad.test(x)||x===place)continue;
-    const hasPrice=/\d{1,3}(?:,\d{3})+\s*원?|\b\d{3,6}\s*원\b/.test(x);
-    if(!hasPrice)continue;
-    let name=x
-      .replace(/\s+[xX]?\d+\s*(개|EA)?\s*[\d,]*\s*원?\s*$/i,'')
-      .replace(/[\s.:\-]*\d{1,3}(?:,\d{3})+\s*원?\s*$/,'')
-      .replace(/[\s.:\-]*\d{3,6}\s*원\s*$/,'')
-      .replace(/^\d+\s+/,'').trim();
-    name=name.replace(/^[^가-힣A-Za-z]+/,'').trim();
-    if(name.length>=2&&name.length<=36&&(name.match(/[가-힣A-Za-z]/g)||[]).length>=2&&!menuBad.test(name)&&weirdRatio(name)<.22&&!menus.includes(name))menus.push(name);
-  }
-  if(!menus.length&&bestIndex>=0){
-    for(const x of lines.slice(bestIndex+1,bestIndex+14)){
-      if(x===place||menuBad.test(x)||/\d{6,}/.test(x)||weirdRatio(x)>.18)continue;
-      const letters=(x.match(/[가-힣A-Za-z]/g)||[]).length;
-      if(letters>=2&&x.length<=28&&!menus.includes(x))menus.push(x);
-      if(menus.length>=4)break;
-    }
-  }
-  return{place,placeConf,menus:menus.slice(0,6),lines,bestScore};
+  if(!menus.length&&bestIndex>=0){for(const x of lines.slice(bestIndex+1,bestIndex+12)){if(x===place||metaBad.test(x)||/\d{6,}/.test(x)||weirdRatio(x)>.18)continue;const letters=(x.match(/[가-힣A-Za-z]/g)||[]).length;if(letters>=2&&x.length<=28&&!menus.includes(x))menus.push(x);if(menus.length>=4)break}}
+  return{place,placeConf,menus:menus.slice(0,6)};
 }
+function qualityScore(text){const t=String(text||'');const chars=[...t].filter(c=>!\s/.test(c));if(chars.length<10)return-99;const ko=(t.match(/[가-힣]/g)||[]).length,en=(t.match(/[A-Za-z]/g)||[]).length,digits=(t.match(/[0-9]/g)||[]).length,receipt=(t.match(/(합계|결제|카드|사업자|주소|품명|수량|단가|금액|메뉴|영수증|receipt)/gi)||[]).length;return Math.min(8,ko/8)+Math.min(4,en/12)+Math.min(3,digits/15)+receipt*2-weirdRatio(t)*20}
 
-function qualityScore(text){
-  const t=String(text||'');
-  const chars=[...t].filter(c=>!\s/.test(c));if(chars.length<10)return -99;
-  const ko=(t.match(/[가-힣]/g)||[]).length,en=(t.match(/[A-Za-z]/g)||[]).length,digits=(t.match(/[0-9]/g)||[]).length;
-  const receipts=(t.match(/(합계|총액|결제|카드|사업자|대표|주소|전화|품명|수량|단가|금액|메뉴|영수증|receipt)/gi)||[]).length;
-  const weird=weirdRatio(t);
-  return Math.min(8,ko/8)+Math.min(4,en/12)+Math.min(3,digits/15)+receipts*2-weird*20;
-}
-
-function loadImage(file){
-  return new Promise((resolve,reject)=>{const u=URL.createObjectURL(file),img=new Image();img.onload=()=>{URL.revokeObjectURL(u);resolve(img)};img.onerror=e=>{URL.revokeObjectURL(u);reject(e)};img.src=u});
-}
+function loadImage(file){return new Promise((resolve,reject)=>{const u=URL.createObjectURL(file),img=new Image();img.onload=()=>{URL.revokeObjectURL(u);resolve(img)};img.onerror=()=>{URL.revokeObjectURL(u);reject(new Error('사진을 열지 못했습니다.'))};img.src=u})}
 async function makeOcrImage(file,angle){
-  const img=await loadImage(file);const swap=angle===90||angle===270;
-  const maxSide=1900,scale=Math.min(2.2,maxSide/Math.max(img.naturalWidth,img.naturalHeight));
-  const sw=Math.max(1,Math.round(img.naturalWidth*scale)),sh=Math.max(1,Math.round(img.naturalHeight*scale));
-  const c=document.createElement('canvas');c.width=swap?sh:sw;c.height=swap?sw:sh;const ctx=c.getContext('2d',{willReadFrequently:true});
-  ctx.save();ctx.translate(c.width/2,c.height/2);ctx.rotate(angle*Math.PI/180);ctx.drawImage(img,-sw/2,-sh/2,sw,sh);ctx.restore();
-  const d=ctx.getImageData(0,0,c.width,c.height),p=d.data;
-  for(let i=0;i<p.length;i+=4){const g=.299*p[i]+.587*p[i+1]+.114*p[i+2];let v=(g-128)*1.55+128;v=Math.max(0,Math.min(255,v));p[i]=p[i+1]=p[i+2]=v}
-  ctx.putImageData(d,0,0);return c.toDataURL('image/jpeg',.9);
+  const img=await loadImage(file),swap=angle===90||angle===270,maxSide=1800,scale=Math.min(2,maxSide/Math.max(img.naturalWidth,img.naturalHeight));
+  const sw=Math.max(1,Math.round(img.naturalWidth*scale)),sh=Math.max(1,Math.round(img.naturalHeight*scale)),c=document.createElement('canvas');c.width=swap?sh:sw;c.height=swap?sw:sh;
+  const ctx=c.getContext('2d',{willReadFrequently:true});ctx.save();ctx.translate(c.width/2,c.height/2);ctx.rotate(angle*Math.PI/180);ctx.drawImage(img,-sw/2,-sh/2,sw,sh);ctx.restore();
+  const d=ctx.getImageData(0,0,c.width,c.height),p=d.data;for(let i=0;i<p.length;i+=4){const g=.299*p[i]+.587*p[i+1]+.114*p[i+2];const v=Math.max(0,Math.min(255,(g-128)*1.4+128));p[i]=p[i+1]=p[i+2]=v}ctx.putImageData(d,0,0);return c.toDataURL('image/jpeg',.88)
 }
-async function getWorker(){
-  if(ocrWorker)return ocrWorker;if(!window.Tesseract)throw new Error('OCR 모듈을 불러오지 못했습니다.');
-  ocrWorker=await Tesseract.createWorker('kor+eng',1);return ocrWorker;
+async function getWorker(){if(ocrWorker)return ocrWorker;if(!window.Tesseract)throw new Error('OCR 모듈을 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.');ocrWorker=await Tesseract.createWorker('kor+eng',1);return ocrWorker}
+async function recognizeAngle(worker,angle,slot,total){$('#ocrStatus').textContent=`영수증 글자를 읽는 중… ${slot}/${total}`;$('#ocrBar').style.width=Math.round((slot-1)/total*85+5)+'%';const src=await makeOcrImage(receiptFile,angle),r=await worker.recognize(src),text=r.data.text||'';return{angle,text,score:qualityScore(text),parsed:parseReceipt(text)}}
+async function recognizeBest(){const worker=await getWorker(),results=[];results.push(await recognizeAngle(worker,0,1,2));results.push(await recognizeAngle(worker,180,2,2));let best=results.sort((a,b)=>(b.score+b.parsed.placeConf*8)-(a.score+a.parsed.placeConf*8))[0];if(best.score<8||best.parsed.placeConf<.45){results.push(await recognizeAngle(worker,90,3,4));results.push(await recognizeAngle(worker,270,4,4));best=results.sort((a,b)=>(b.score+b.parsed.placeConf*8)-(a.score+a.parsed.placeConf*8))[0]}return best}
+
+async function handleSelectedFile(file){
+  if(!file)return;if(!file.type.startsWith('image/')){toast('사진 파일을 선택해 주세요');return}
+  clearReceipt(false);receiptFile=file;receiptUrl=URL.createObjectURL(file);$('#receiptImg').src=receiptUrl;$('#selectedName').textContent=`선택됨: ${file.name||'영수증 사진'}`;$('#receiptPreview').classList.add('show');$('#clearReceipt').style.display='inline-flex';$('#retryReceipt').disabled=false;$('#ocrStatus').textContent='사진이 정상적으로 들어왔어요. 잠시 후 자동으로 글자를 읽습니다.';
+  await new Promise(r=>setTimeout(r,250));recognizeAndAutoSearch();
 }
-async function recognizeAngle(worker,angle,slot,total){
-  $('#ocrStatus').textContent=`영수증 방향과 글자를 확인하는 중… ${slot}/${total}`;
-  $('#ocrBar').style.width=Math.round((slot-1)/total*88+5)+'%';
-  const src=await makeOcrImage(receiptFile,angle);const r=await worker.recognize(src);const text=r.data.text||'';
-  return{angle,text,score:qualityScore(text),parsed:parseReceipt(text)};
-}
-async function recognizeBest(){
-  const worker=await getWorker();const results=[];
-  results.push(await recognizeAngle(worker,0,1,2));
-  results.push(await recognizeAngle(worker,180,2,2));
-  let best=results.sort((a,b)=>b.score-a.score)[0];
-  if(best.score<8||best.parsed.placeConf<.45){
-    results.push(await recognizeAngle(worker,90,3,4));
-    results.push(await recognizeAngle(worker,270,4,4));
-    best=results.sort((a,b)=>(b.score+b.parsed.placeConf*8)-(a.score+a.parsed.placeConf*8))[0];
-  }
-  return best;
-}
+$('#galleryInput').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(f)handleSelectedFile(f)});
+$('#cameraInput').addEventListener('change',e=>{const f=e.target.files&&e.target.files[0];if(f)handleSelectedFile(f)});
+$('#retryReceipt').onclick=()=>recognizeAndAutoSearch();
 
 async function recognizeAndAutoSearch(){
-  if(!receiptFile||receiptBusy)return;
-  receiptBusy=true;$('#retryReceipt').disabled=true;$('#ocrProgress').classList.add('show');$('#ocrBar').style.width='3%';
-  $('#ocrStatus').className='ocr-status';$('#ocrStatus').textContent='영수증 방향을 확인하고 있어요. 거꾸로 찍힌 사진도 자동으로 보정합니다.';$('#autoBadge').classList.remove('show');
+  if(!receiptFile||receiptBusy)return;receiptBusy=true;$('#retryReceipt').disabled=true;$('#ocrProgress').classList.add('show');$('#ocrBar').style.width='3%';$('#ocrStatus').className='ocr-status';$('#ocrStatus').textContent='영수증 방향과 글자를 확인하고 있어요.';$('#autoBadge').classList.remove('show');
   try{
-    const best=await recognizeBest();const parsed=best.parsed;$('#ocrBar').style.width='100%';
-    if(parsed.placeConf<.42||!parsed.place||metaBad.test(parsed.place)||weirdRatio(parsed.place)>.18){
-      $('#place').value='';$('#menu').value='';$('#ocrStatus').className='ocr-status warn';
-      $('#ocrStatus').textContent='상호명을 확실하게 읽지 못했어요. 엉뚱한 리뷰가 만들어지지 않도록 자동 생성을 멈췄습니다. 영수증 상단의 상호명이 보이게 조금 더 가까이 찍어 다시 시도해 주세요.';
-      toast('상호명 인식이 불확실해요');return;
-    }
-    $('#place').value=parsed.place;if(parsed.menus.length)$('#menu').value=parsed.menus.join(', ');else $('#menu').value='';
-    $('#ocrStatus').className='ocr-status good';
-    const rot=best.angle?` · 방향 ${best.angle}° 자동 보정`:'';
-    $('#ocrStatus').textContent=`자동 인식 완료${rot} · 상호명: ${parsed.place}${parsed.menus.length?' · 메뉴: '+parsed.menus.join(', '):''}`;
-    $('#autoBadge').textContent='✓ 인식 결과가 확인되어 매장 정보와 방문자 후기를 검색해 리뷰를 만들고 있어요.';$('#autoBadge').classList.add('show');
-    await makeReview(true);
-  }catch(e){
-    $('#ocrStatus').className='ocr-status warn';$('#ocrStatus').textContent='영수증 인식에 실패했습니다. 영수증 전체가 밝고 선명하게 보이도록 다시 찍어주세요.';toast(e.message||'OCR 실패');
-  }finally{receiptBusy=false;$('#retryReceipt').disabled=!receiptFile;setTimeout(()=>$('#ocrProgress').classList.remove('show'),900)}
+    const best=await recognizeBest(),parsed=best.parsed;$('#ocrBar').style.width='100%';
+    if(parsed.placeConf<.42||!parsed.place||metaBad.test(parsed.place)||weirdRatio(parsed.place)>.18){$('#ocrStatus').className='ocr-status warn';$('#ocrStatus').textContent='사진은 정상적으로 들어왔지만 상호명을 확실하게 읽지 못했어요. 상호명이 잘 보이도록 다시 찍거나 아래 상호명 칸만 직접 적어주세요.';toast('상호명 인식이 불확실해요');return}
+    $('#place').value=parsed.place;$('#menu').value=parsed.menus.join(', ');$('#ocrStatus').className='ocr-status good';const rot=best.angle?` · 방향 ${best.angle}° 자동 보정`:'';$('#ocrStatus').textContent=`자동 인식 완료${rot} · 상호명: ${parsed.place}${parsed.menus.length?' · 메뉴: '+parsed.menus.join(', '):''}`;$('#autoBadge').textContent='✓ 상호명과 메뉴를 찾았습니다. 매장 정보와 공개 후기를 검색해 리뷰를 만들고 있어요.';$('#autoBadge').classList.add('show');await makeReview(true)
+  }catch(e){$('#ocrStatus').className='ocr-status warn';$('#ocrStatus').textContent=`사진은 들어왔지만 인식 중 오류가 났어요. ${e.message||''}`;toast('영수증 인식에 실패했어요')}
+  finally{receiptBusy=false;$('#retryReceipt').disabled=!receiptFile;setTimeout(()=>$('#ocrProgress').classList.remove('show'),900)}
 }
-
-$('#receiptFile').addEventListener('change',async e=>{
-  const f=e.target.files&&e.target.files[0];if(!f)return;
-  clearReceipt(false);receiptFile=f;receiptUrl=URL.createObjectURL(f);$('#receiptImg').src=receiptUrl;$('#receiptPreview').classList.add('show');$('#clearReceipt').style.display='inline-block';$('#retryReceipt').disabled=false;
-  await recognizeAndAutoSearch();
-});
-$('#retryReceipt').onclick=recognizeAndAutoSearch;
 
 function setLoading(v,auto=false){const b=$('#generate');b.disabled=v;b.textContent=v?(auto?'🔎 영수증 매장 자동 검색 중…':'🔎 매장 정보와 후기 찾는 중…'):'🔎 검색해서 리뷰 만들어줘'}
 async function makeReview(auto=false){
-  const p=payload();if(!p.place){if(!auto){$('#place').focus();toast('상호명이나 영수증 사진을 넣어주세요')}return}
-  setLoading(true,auto);
-  try{
-    const r=await fetch('/api/review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});const data=await r.json();if(!r.ok)throw new Error(data.error||'리뷰 생성에 실패했습니다.');
-    showResult(data);saveHistory({...p,text:data.review,researched:!!data.researched,features:data.features||[],at:Date.now()});renderHistory();
-  }catch(e){toast(e.message||'잠시 후 다시 시도해 주세요')}finally{setLoading(false,auto)}
+  const p=payload();if(!p.place){if(!auto){$('#place').focus();toast('상호명이나 영수증 사진을 넣어주세요')}return}setLoading(true,auto);
+  try{const r=await fetch('/api/review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)}),data=await r.json();if(!r.ok)throw new Error(data.error||'리뷰 생성에 실패했습니다.');showResult(data);saveHistory({...p,text:data.review,researched:!!data.researched,features:data.features||[],at:Date.now()});renderHistory()}catch(e){toast(e.message||'잠시 후 다시 시도해 주세요')}finally{setLoading(false,auto)}
 }
-function showResult(data){
-  const review=data.review||'';$('#review').textContent=review;$('#count').textContent=`${review.length}자`;
-  const tag=$('#resultTag'),box=$('#research');
-  if(data.researched){tag.textContent='웹 후기 참고';tag.classList.remove('gray');const f=(data.features||[]).slice(0,4);box.textContent=f.length?`검색으로 확인된 매장 특징: ${f.join(' · ')}`:'공개된 매장 정보와 후기를 참고했습니다.'}
-  else{tag.textContent='입력 내용 중심';tag.classList.add('gray');box.textContent='검색에서 확실한 매장 정보를 찾지 못해 영수증/입력 내용 중심으로 작성했습니다.'}
-  box.classList.add('show');$('#resultCard').classList.add('show');$('#resultCard').scrollIntoView({behavior:'smooth',block:'nearest'});
-}
+function showResult(data){const review=data.review||'';$('#review').textContent=review;$('#count').textContent=`${review.length}자`;const tag=$('#resultTag'),box=$('#research');if(data.researched){tag.textContent='웹 후기 참고';tag.classList.remove('gray');const f=(data.features||[]).slice(0,4);box.textContent=f.length?`검색으로 확인된 매장 특징: ${f.join(' · ')}`:'공개된 매장 정보와 후기를 참고했습니다.'}else{tag.textContent='입력 내용 중심';tag.classList.add('gray');box.textContent='검색에서 확실한 매장 정보를 찾지 못해 영수증/입력 내용 중심으로 작성했습니다.'}box.classList.add('show');$('#resultCard').classList.add('show');$('#resultCard').scrollIntoView({behavior:'smooth',block:'nearest'})}
 function historyData(){try{return JSON.parse(localStorage.getItem('simpleReviewHistory')||'[]')}catch(e){return[]}}
 function saveHistory(item){const a=historyData();a.unshift(item);localStorage.setItem('simpleReviewHistory',JSON.stringify(a.slice(0,12)))}
 function deleteHistory(i){const a=historyData();a.splice(i,1);localStorage.setItem('simpleReviewHistory',JSON.stringify(a));renderHistory();toast('최근 리뷰에서 삭제했어요')}
-function renderHistory(){
-  const a=historyData(),root=$('#history');root.innerHTML='';if(!a.length){root.innerHTML='<div class="empty">아직 만든 리뷰가 없어요.</div>';return}
-  a.forEach((x,i)=>{
-    const el=document.createElement('div');el.className='history-item';
-    const place=document.createElement('div');place.className='history-place';place.textContent=x.place||'리뷰';
-    const text=document.createElement('div');text.className='history-text';text.textContent=x.text||'';
-    const del=document.createElement('button');del.className='history-delete';del.type='button';del.setAttribute('aria-label','리뷰 삭제');del.textContent='×';del.onclick=e=>{e.stopPropagation();deleteHistory(i)};
-    el.append(place,text,del);el.onclick=()=>{$('#review').textContent=x.text||'';$('#count').textContent=`${(x.text||'').length}자`;$('#resultCard').classList.add('show');$('#resultCard').scrollIntoView({behavior:'smooth',block:'nearest'})};root.appendChild(el);
-  });
-}
+function renderHistory(){const a=historyData(),root=$('#history');root.innerHTML='';if(!a.length){root.innerHTML='<div class="empty">아직 만든 리뷰가 없어요.</div>';return}a.forEach((x,i)=>{const el=document.createElement('div');el.className='history-item';const place=document.createElement('div');place.className='history-place';place.textContent=x.place||'리뷰';const text=document.createElement('div');text.className='history-text';text.textContent=x.text||'';const del=document.createElement('button');del.className='history-delete';del.type='button';del.setAttribute('aria-label','리뷰 삭제');del.textContent='×';del.onclick=e=>{e.stopPropagation();deleteHistory(i)};el.append(place,text,del);el.onclick=()=>{$('#review').textContent=x.text||'';$('#count').textContent=`${(x.text||'').length}자`;$('#resultCard').classList.add('show');$('#resultCard').scrollIntoView({behavior:'smooth',block:'nearest'})};root.appendChild(el)})}
 async function copyReview(){const t=$('#review').textContent.trim();if(!t)return;try{await navigator.clipboard.writeText(t)}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}toast('리뷰를 복사했어요')}
 $('#generate').onclick=()=>makeReview(false);$('#reroll').onclick=()=>makeReview(false);$('#copy').onclick=copyReview;renderHistory();
 </script>
