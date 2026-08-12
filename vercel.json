@@ -1,13 +1,14 @@
 {
   "cleanUrls": true,
+  "rewrites": [
+    {"source": "/review", "destination": "/review-v2/index.html"},
+    {"source": "/review/", "destination": "/review-v2/index.html"}
+  ],
   "headers": [
     {
       "source": "/api/posts",
       "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "s-maxage=180, stale-while-revalidate=600"
-        }
+        {"key": "Cache-Control", "value": "s-maxage=180, stale-while-revalidate=600"}
       ]
     }
   ]
