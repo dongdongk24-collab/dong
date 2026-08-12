@@ -5,10 +5,22 @@
     {"source": "/", "destination": "/review/", "permanent": false}
   ],
   "rewrites": [
-    {"source": "/review", "destination": "/review-v2/index.html"},
-    {"source": "/review/", "destination": "/review-v2/index.html"}
+    {"source": "/review", "destination": "/review/index.html"},
+    {"source": "/review/", "destination": "/review/index.html"}
   ],
   "headers": [
+    {
+      "source": "/review",
+      "headers": [
+        {"key": "Cache-Control", "value": "no-store, max-age=0"}
+      ]
+    },
+    {
+      "source": "/review/",
+      "headers": [
+        {"key": "Cache-Control", "value": "no-store, max-age=0"}
+      ]
+    },
     {
       "source": "/api/posts",
       "headers": [
