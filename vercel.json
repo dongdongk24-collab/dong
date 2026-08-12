@@ -1,8 +1,10 @@
 {
   "cleanUrls": true,
   "alias": ["dong-review-public"],
+  "redirects": [
+    {"source": "/", "destination": "/review/", "permanent": false}
+  ],
   "rewrites": [
-    {"source": "/", "destination": "/review-v2/index.html"},
     {"source": "/review", "destination": "/review-v2/index.html"},
     {"source": "/review/", "destination": "/review-v2/index.html"}
   ],
