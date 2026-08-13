@@ -3,7 +3,7 @@
   "alias": ["dong-review-public"],
   "redirects": [
     {"source": "/", "destination": "/review/", "permanent": false},
-    {"source": "/api/review", "destination": "/api/review2", "permanent": false}
+    {"source": "/api/review", "destination": "/api/review3", "permanent": false}
   ],
   "rewrites": [
     {"source": "/review", "destination": "/review/index.html"},
@@ -29,7 +29,13 @@
       ]
     },
     {
-      "source": "/api/review2",
+      "source": "/api/review3",
+      "headers": [
+        {"key": "Cache-Control", "value": "no-store, max-age=0"}
+      ]
+    },
+    {
+      "source": "/api/place-search",
       "headers": [
         {"key": "Cache-Control", "value": "no-store, max-age=0"}
       ]
