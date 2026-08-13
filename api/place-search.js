@@ -28,7 +28,7 @@ async function fetchText(url, timeout = 6500) {
   try {
     const r = await fetch(url, {
       headers: {
-        'user-agent': 'Mozilla/5.0 (compatible; SimpleReviewMaker/1.6)',
+        'user-agent': 'Mozilla/5.0 (compatible; SimpleReviewMaker/1.7)',
         'accept-language': 'ko-KR,ko;q=0.9,en;q=0.5'
       },
       signal: controller.signal
@@ -50,16 +50,16 @@ const FOOD_WORDS = [
   '칼국수','수제비','냉면','우동','라멘','라면','초밥','스시','돈까스','돈카츠',
   '파스타','피자','치킨','버거','햄버거','카페','커피','베이커리','빵집','식당','맛집',
   '분식','고기','삼겹살','곱창','막창','족발','보쌈','김밥','닭갈비','쭈꾸미','샤브샤브'
-];
-const DESCRIPTOR_WORDS = ['전문점','전문','뚝배기','본점','직영점','매장'];
+].sort((a,b)=>b.length-a.length);
+const DESCRIPTOR_WORDS = ['전문점','전문','뚝배기','본점','직영점','매장'].sort((a,b)=>b.length-a.length);
 
 function stripFoodSuffix(q) {
   let x = normalize(q);
   let category = '';
-  for (const w of FOOD_WORDS.sort((a,b)=>b.length-a.length)) {
+  for (const w of FOOD_WORDS) {
     if (x.endsWith(w)) { category = w; x = x.slice(0, -w.length); break; }
   }
-  for (const w of DESCRIPTOR_WORDS.sort((a,b)=>b.length-a.length)) {
+  for (const w of DESCRIPTOR_WORDS) {
     if (x.endsWith(w)) x = x.slice(0, -w.length);
   }
   return { root:x, category };
@@ -73,12 +73,9 @@ function queryVariants(q) {
   if (root && category) {
     set.add(`${root} ${category}`);
     set.add(root);
-    for (const d of DESCRIPTOR_WORDS) {
-      if (root.endsWith(d)) set.add(root.slice(0,-d.length));
-    }
-    if (root.length >= 3) set.add(root.slice(0, Math.max(2, root.length - 1)));
+    if (root.length >= 3) set.add(root.slice(0, root.length - 1));
   }
-  if (compact.length >= 4) set.add(compact.slice(0, Math.ceil(compact.length * 0.6)));
+  if (compact.length >= 5) set.add(compact.slice(0, Math.max(2, Math.ceil(compact.length * 0.55))));
   return [...set].map(x=>clean(x,80)).filter(x=>x.length>=2).slice(0,6);
 }
 
@@ -93,20 +90,23 @@ function bigrams(s) {
 function dice(a,b) {
   const A=bigrams(a), B=bigrams(b);
   if (!A.size || !B.size) return 0;
-  let inter=0; for (const x of A) if (B.has(x)) inter++;
+  let inter=0;
+  for (const x of A) if (B.has(x)) inter++;
   return (2*inter)/(A.size+B.size);
 }
 
 function commonPrefixRatio(a,b) {
   const A=normalize(a), B=normalize(b), n=Math.min(A.length,B.length);
-  let i=0; while(i<n && A[i]===B[i]) i++;
+  let i=0;
+  while(i<n && A[i]===B[i]) i++;
   return n ? i/n : 0;
 }
 
 function isSubsequence(shorter,longer) {
   const a=normalize(shorter), b=normalize(longer);
   if (!a || !b || a.length>b.length) return false;
-  let i=0; for (const c of b) if (c===a[i]) i++;
+  let i=0;
+  for (const c of b) if (c===a[i]) i++;
   return i===a.length;
 }
 
@@ -142,18 +142,31 @@ function firstMatch(html, patterns) {
   return '';
 }
 
+function urlish(html) {
+  return decodeHtml(String(html || ''))
+    .replace(/\\u002f/gi,'/')
+    .replace(/\\u003a/gi,':')
+    .replace(/\\u003f/gi,'?')
+    .replace(/\\u003d/gi,'=')
+    .replace(/\\\//g,'/')
+    .replace(/%2f/gi,'/')
+    .replace(/%3a/gi,':')
+    .replace(/%3f/gi,'?')
+    .replace(/%3d/gi,'=');
+}
+
 function extractProfileUrls(html) {
-  const raw = decodeHtml(String(html || ''));
+  const raw = urlish(html);
   const urls = [];
   const seen = new Set();
   const patterns = [
-    /https?:\\?\/?\\?\/www\.diningcode\.com\\?\/profile\.php\?rid=([A-Za-z0-9_-]+)/gi,
     /(?:https?:\/\/www\.diningcode\.com\/)?profile\.php\?rid=([A-Za-z0-9_-]+)/gi,
-    /diningcode\.com%2Fprofile\.php%3Frid%3D([A-Za-z0-9_-]+)/gi
+    /www\.diningcode\.com\/profile\.php\?rid=([A-Za-z0-9_-]+)/gi,
+    /["']rid["']\s*:\s*["']([A-Za-z0-9_-]{6,})["']/gi
   ];
   for (const re of patterns) {
     let m;
-    while ((m = re.exec(raw)) && urls.length < 30) {
+    while ((m = re.exec(raw)) && urls.length < 35) {
       const rid = m[1];
       if (!seen.has(rid)) {
         seen.add(rid);
@@ -187,55 +200,57 @@ function parseProfile(html, url, query) {
     if (m) address = m[0].replace(/\s+/g,' ').trim();
   }
 
-  let context = '';
-  const keywords = [];
-  const km = text.match(/(?:혼밥|데이트|가족외식|점심식사|저녁식사|셀프바|셀프코너|주차|지역주민이찾는|캐주얼한|깔끔한|매콤한|조용한|푸짐한|가성비좋은)/g);
-  if (km) keywords.push(...[...new Set(km)].slice(0,4));
-  if (keywords.length) context = keywords.join(' · ');
-
+  const keywords = text.match(/(?:혼밥|데이트|가족외식|점심식사|저녁식사|셀프바|셀프코너|주차|지역주민이찾는|캐주얼한|깔끔한|매콤한|조용한|푸짐한|가성비좋은)/g) || [];
+  const context = [...new Set(keywords)].slice(0,4).join(' · ');
   const rid = (url.match(/[?&]rid=([^&]+)/) || [])[1] || '';
-  const score = scoreName(query, name, `${address} ${context}`);
-  return { id:rid, name:clean(name,80), address:clean(address,140), context, profileUrl:url, score };
+  return {
+    id:rid,
+    name:clean(name,80),
+    address:clean(address,140),
+    context,
+    profileUrl:url,
+    score:scoreName(query, name, `${address} ${context}`)
+  };
 }
 
 async function discoverFromDiningCode(q) {
   try {
-    const html = await fetchText(`https://www.diningcode.com/list.dc?query=${encodeURIComponent(q)}`, 6000);
-    return extractProfileUrls(html);
+    return extractProfileUrls(await fetchText(`https://www.diningcode.com/list.dc?query=${encodeURIComponent(q)}`, 6000));
   } catch (_) { return []; }
 }
 
 async function discoverFromNaver(q) {
   try {
     const query = `site:diningcode.com/profile.php ${q}`;
-    const html = await fetchText(`https://search.naver.com/search.naver?where=web&query=${encodeURIComponent(query)}`, 5200);
-    return extractProfileUrls(html);
+    return extractProfileUrls(await fetchText(`https://search.naver.com/search.naver?where=web&query=${encodeURIComponent(query)}`, 5200));
   } catch (_) { return []; }
 }
 
 async function discoverFromDaum(q) {
   try {
     const query = `site:www.diningcode.com/profile.php ${q}`;
-    const html = await fetchText(`https://search.daum.net/search?w=tot&q=${encodeURIComponent(query)}`, 5200);
-    return extractProfileUrls(html);
+    return extractProfileUrls(await fetchText(`https://search.daum.net/search?w=tot&q=${encodeURIComponent(query)}`, 5200));
   } catch (_) { return []; }
 }
 
 async function collectUrls(query) {
   const variants = queryVariants(query);
+  const jobs = [];
+  variants.forEach((v,i) => {
+    jobs.push(discoverFromDiningCode(v));
+    if (i < 4) jobs.push(discoverFromNaver(v), discoverFromDaum(v));
+  });
+  const settled = await Promise.allSettled(jobs);
   const all = new Set();
-  for (let i=0;i<variants.length;i++) {
-    const v = variants[i];
-    const jobs = [discoverFromDiningCode(v)];
-    if (i < 3) jobs.push(discoverFromNaver(v), discoverFromDaum(v));
-    const settled = await Promise.allSettled(jobs);
-    for (const s of settled) {
-      if (s.status !== 'fulfilled') continue;
-      for (const u of s.value || []) all.add(u);
+  for (const s of settled) {
+    if (s.status !== 'fulfilled') continue;
+    for (const u of s.value || []) {
+      all.add(u);
+      if (all.size >= 24) break;
     }
-    if (all.size >= 18) break;
+    if (all.size >= 24) break;
   }
-  return [...all].slice(0,22);
+  return [...all];
 }
 
 module.exports = async function handler(req, res) {
@@ -253,7 +268,7 @@ module.exports = async function handler(req, res) {
     for (const s of settled) {
       if (s.status !== 'fulfilled' || !s.value?.name) continue;
       const p = s.value;
-      if (p.score < 25) continue;
+      if (p.score < 24) continue;
       const prev = byId.get(p.id);
       if (!prev || p.score > prev.score) byId.set(p.id,p);
     }
@@ -265,8 +280,8 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({
       query:q,
       places,
-      relaxed: queryVariants(q).slice(1),
-      totalCandidates: places.length
+      relaxed:queryVariants(q).slice(1),
+      totalCandidates:places.length
     });
   } catch (e) {
     return res.status(200).json({ query:q, places:[], error:'매장 후보 검색에 실패했습니다.' });
