@@ -2,10 +2,10 @@
   "cleanUrls": true,
   "alias": ["dong-review-public"],
   "redirects": [
-    {"source": "/", "destination": "/review/", "permanent": false}
+    {"source": "/", "destination": "/review/", "permanent": false},
+    {"source": "/api/review", "destination": "/api/review2", "permanent": false}
   ],
   "rewrites": [
-    {"source": "/api/review", "destination": "/api/review2"},
     {"source": "/review", "destination": "/review/index.html"},
     {"source": "/review/", "destination": "/review/index.html"}
   ],
@@ -24,6 +24,12 @@
     },
     {
       "source": "/api/review",
+      "headers": [
+        {"key": "Cache-Control", "value": "no-store, max-age=0"}
+      ]
+    },
+    {
+      "source": "/api/review2",
       "headers": [
         {"key": "Cache-Control", "value": "no-store, max-age=0"}
       ]
