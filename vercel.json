@@ -5,6 +5,7 @@
     {"source": "/", "destination": "/review/", "permanent": false}
   ],
   "rewrites": [
+    {"source": "/api/review", "destination": "/api/review2"},
     {"source": "/review", "destination": "/review/index.html"},
     {"source": "/review/", "destination": "/review/index.html"}
   ],
@@ -17,6 +18,12 @@
     },
     {
       "source": "/review/",
+      "headers": [
+        {"key": "Cache-Control", "value": "no-store, max-age=0"}
+      ]
+    },
+    {
+      "source": "/api/review",
       "headers": [
         {"key": "Cache-Control", "value": "no-store, max-age=0"}
       ]
