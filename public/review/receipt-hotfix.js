@@ -1,0 +1,1 @@
+(()=>{'use strict';window.__receiptHotfixVersion='6.0';})();
