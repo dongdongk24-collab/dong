@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
-  "alias": ["dong-review-public"],
+  "alias": ["dong-review-maker"],
   "redirects": [
     {"source": "/", "destination": "/review/", "permanent": false},
     {"source": "/api/review", "destination": "/api/review3", "permanent": false}
