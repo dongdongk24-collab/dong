@@ -1,4 +1,5 @@
 (()=>{'use strict';
+window.__addressSourceVersion='6.9.1';
 const baseFetch=window.fetch.bind(window);
 function providerRank(p){const s=new Set([p?.source,...(Array.isArray(p?.sources)?p.sources:[])].filter(Boolean));if(s.has('kakao'))return 3;if(s.has('naver'))return 2;if(s.has('diningcode'))return 1;return 0}
 function sourceText(p){const s=new Set([p?.source,...(Array.isArray(p?.sources)?p.sources:[])].filter(Boolean));const names=[];if(s.has('kakao'))names.push('카카오맵');if(s.has('naver'))names.push('네이버');if(s.has('diningcode'))names.push('다이닝코드');return names.join(' + ')}
