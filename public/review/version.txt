@@ -1,1 +1,1 @@
-v4.4 - category-aware review research; current input only; restaurant/cafe-specific generation
+v6.9 - address priority: Kakao Map > Naver > DiningCode; menu guard v6.8 retained
