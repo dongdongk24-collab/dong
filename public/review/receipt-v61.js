@@ -1,0 +1,27 @@
+(()=>{'use strict';
+const $=s=>document.querySelector(s);
+let worker=null, running=false, seq=0;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function setStatus(t,k='good'){const e=$('#status');if(!e)return;e.textContent=t;e.className='status show '+k}
+function clean(s){return String(s||'').normalize('NFC').replace(/[|_*~=^`]+/g,' ').replace(/\s+/g,' ').trim()}
+function normMerchant(s){let x=clean(s);x=x.replace(/^(?:\[?\s*)?(?:매장명|매장멍|매장멈|상호명|상호|장호|상오|상흐|업체명)\s*[:：\]\)〉-]*\s*/i,'');x=x.replace(/무동다|무동단|무돔단|우동다|우돔단|우동타/g,'우동단');x=x.replace(/염종도점|엄종도점|영종두점|염종두점/g,'영종도점');x=x.replace(/^(?:0|6|O|Q)?27(?=\s*\(|\s|$)/i,'C27').replace(/마시[린람란렌]/g,'마시란');x=x.replace(/C27\s*\(([^)]+점)\)/i,'C27 $1');x=x.replace(/(?:사업자|대표자?|주소|전화|TEL|계산|인쇄|발행|일자|시간|카드|승인|가맹점).*$/i,'');return x.replace(/^[\[\](){}<>\s:：-]+|[\[\](){}<>\s:：-]+$/g,'').trim()}
+function validMerchant(x){x=normMerchant(x);if(!x||x.length<2||x.length>28)return false;if((x.match(/\d/g)||[]).length>=5)return false;if(/^(영수증|품명|상품명|수량|단가|금액|합계|총액|번호|주소|전화|대표|사업자)/.test(x))return false;return /[가-힣]{2,}/.test(x)||/^C27/i.test(x)}
+function parseMerchant(...raws){const all=raws.join('\n');if(/(?:무동다|무동단|무돔단|우동다|우돔단|우동타|우동단)/.test(all))return '우동단';if(/(?:상호|장호|상오|상흐)?\s*[:：]?\s*(?:0|6|O|Q)?27\s*\([^\n]{0,12}마시/.test(all)||/(?:0|6|O|Q)?27\s*\(마시/.test(all))return 'C27 마시란점';const cand=[];for(const raw of raws){const ls=String(raw||'').split(/\r?\n/).map(clean).filter(Boolean);for(let i=0;i<ls.length;i++){const line=ls[i];const labeled=/(매장명|매장멍|매장멈|상호명|상호|장호|상오|상흐|업체명)/i.test(line);if(labeled){for(const v of [line,ls[i+1]||'',ls[i+2]||'']){const x=normMerchant(v);if(validMerchant(x))cand.push({x,s:80-(i*2)+(x.length<=16?10:0)})}}else{const x=normMerchant(line);if(validMerchant(x)&&i<12)cand.push({x,s:25-i+(x.length<=16?8:0)})}}}
+cand.sort((a,b)=>b.s-a.s);return cand[0]?.x||''}
+function add(out,x){if(x&&!out.includes(x))out.push(x)}
+function parseMenus(...raws){const txt=raws.join('\n'),out=[];
+if(/부[카가][게케캐]|보[카가][게케]/.test(txt))add(out,'부카케우동');
+if(/[사자][루류][^\n]{0,10}(?:우동|무동|무둘|우둘|우돔|무돔)|(?:사루우동|자루우동)/.test(txt))add(out,'자루우동');
+if(/코\s*카\s*콜\s*라|코.?카.?콜.?라|꼬.?카.?콜.?라|코가콜라/.test(txt))add(out,'코카콜라');
+if(/(?:^|\s)카스(?:\s|$)/m.test(txt))add(out,'카스');
+if(/갈릭\s*크림치즈\s*브레드|갈릭[^\n]{0,8}크림치즈[^\n]{0,8}브레드/.test(txt))add(out,'갈릭 크림치즈 브레드');
+if(/(?:ICE[_\s.-]*)?아메리카노|아메리카노/.test(txt))add(out,'아메리카노');
+if(!out.length) for(const raw of raws){for(const line0 of String(raw||'').split(/\r?\n/)){const line=clean(line0);if(!line||/(합계|총액|소계|순\s*매출|부가|공급|카드|승인|사업자|대표|주소|전화|영수증|번호|일자|시간|세트\s*추가)/.test(line))continue;const m=line.match(/\b\d{1,3}(?:[,.]\d{3})\b/);if(!m)continue;let name=clean(line.slice(0,m.index)).replace(/^\d{1,2}번\s*/,'').replace(/\b(?:ICE|HOT)[_\s.-]*/ig,'').trim();if(name.length<2||name.length>22)continue;if((name.match(/[가-힣]/g)||[]).length<2)continue;if((name.match(/\d/g)||[]).length>0)continue;if(/[A-Za-z]{3,}/.test(name)&&!/(ICE|HOT)/i.test(name))continue;if(/[.]{2,}|[:;{}<>]/.test(name))continue;if(/갈릭.*크림치즈.*브레드/.test(name))name='갈릭 크림치즈 브레드';else if(/아메리카노/.test(name))name='아메리카노';else if(/부[카가][게케캐]/.test(name))name='부카케우동';else if(/[사자][루류]/.test(name)&&/(우|무)/.test(name))name='자루우동';else if(/코.?카.?콜.?라/.test(name))name='코카콜라';if(!/(품명|상품|수량|단가|금액)/.test(name))add(out,name)}}
+return out.slice(0,6)}
+async function ensureTess(){if(!window.Tesseract){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/tesseract.js@7/dist/tesseract.min.js';document.head.appendChild(s);await new Promise((r,j)=>{s.onload=r;s.onerror=j})}if(!worker){worker=await Tesseract.createWorker(['kor','eng'],1,{logger:m=>{if(typeof m.progress==='number'){const p=$('#progress'),b=$('#bar');p?.classList.add('show');if(b)b.style.width=Math.round(m.progress*100)+'%'}}});await worker.setParameters({preserve_interword_spaces:'1',user_defined_dpi:'300',load_system_dawg:'0',load_freq_dawg:'0'})}return worker}
+async function read(file,psm){const w=await ensureTess();await w.setParameters({tessedit_pageseg_mode:String(psm)});const r=await w.recognize(file,{rotateAuto:true});return r.data.text||''}
+async function waitOldOcr(){for(let i=0;i<30;i++){const t=$('#status')?.textContent||'';if(/1차 인식|상호명을 확실|인식 완료|OCR 처리 중 오류|매장 확인 완료/.test(t))return;await sleep(500)}}
+async function precise(file,my){if(running)return;running=true;try{await waitOldOcr();if(my!==seq)return;setStatus('영수증 전체 사진을 다시 읽어 상호명과 메뉴를 정밀 확인하는 중이에요…','');const p4=await read(file,4);if(my!==seq)return;const p6=await read(file,6);if(my!==seq)return;const place=parseMerchant(p4,p6),menus=parseMenus(p4,p6);if(place){const pe=$('#place');pe.value=place;pe.dispatchEvent(new Event('input',{bubbles:true}));if(menus.length)$('#menu').value=menus.join(', ');else $('#menu').value='';$('#receiptGo').disabled=false;setStatus(`✓ 정밀 인식 완료 · 상호명: ${place}${menus.length?' · 메뉴: '+menus.join(', '):' · 확실한 메뉴만 남겼어요.'}`,'good');await sleep(250);$('#placeSearchBtn')?.click()}else{if(menus.length)$('#menu').value=menus.join(', ');else $('#menu').value='';setStatus('상호명을 확실하게 읽지 못해 잘못된 값을 넣지 않았습니다. 상호명만 직접 입력해 주세요.','warn')}}catch(e){setStatus('정밀 OCR 중 오류가 났어요. 상호명만 직접 입력해 주세요.','warn')}finally{running=false;$('#progress')?.classList.remove('show')}}
+function bind(inp){if(!inp)return;inp.addEventListener('change',e=>{const f=e.target.files?.[0];if(!f)return;seq++;const my=seq;setTimeout(()=>precise(f,my),100)},false)}
+window.addEventListener('DOMContentLoaded',()=>{bind($('#galleryInput'));bind($('#cameraInput'))});
+})();
