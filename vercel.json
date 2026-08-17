@@ -6,15 +6,14 @@
     {"source": "/api/review", "destination": "/api/review3", "permanent": false}
   ],
   "rewrites": [
-    {"source": "/review", "destination": "/review/v61.html"},
-    {"source": "/review/", "destination": "/review/v61.html"}
+    {"source": "/review", "destination": "/review/index.html"},
+    {"source": "/review/", "destination": "/review/index.html"}
   ],
   "headers": [
     {"source": "/review", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate"}]},
     {"source": "/review/", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate"}]},
-    {"source": "/review/v61.html", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate"}]},
-    {"source": "/review/receipt-v61.js", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate"}]},
-    {"source": "/review/app59.js", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate"}]},
+    {"source": "/review/index.html", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate"}]},
+    {"source": "/review/app64.js", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate"}]},
     {"source": "/api/review", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0"}]},
     {"source": "/api/review3", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0"}]},
     {"source": "/api/place-search", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0"}]},
