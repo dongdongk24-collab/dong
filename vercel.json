@@ -1,6 +1,6 @@
 {
   "cleanUrls": true,
-  "alias": ["dong-review-maker"],
+  "alias": ["dong-review-public", "dong-review-maker"],
   "redirects": [
     {"source": "/", "destination": "/review/", "permanent": false},
     {"source": "/api/review", "destination": "/api/review3", "permanent": false}
@@ -14,6 +14,7 @@
     {"source": "/review/", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate"}]},
     {"source": "/review/index.html", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate"}]},
     {"source": "/review/app64.js", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate"}]},
+    {"source": "/review/search-fix.js", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0, must-revalidate"}]},
     {"source": "/api/review", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0"}]},
     {"source": "/api/review3", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0"}]},
     {"source": "/api/place-search", "headers": [{"key": "Cache-Control", "value": "no-store, max-age=0"}]},
