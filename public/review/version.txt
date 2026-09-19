@@ -1,1 +1,1 @@
-v6.9 - address priority: Kakao Map > Naver > DiningCode; menu guard v6.8 retained
+v6.12 - API-key-free fast place search: one-pass Naver public lookup; address-confirmed candidates only
